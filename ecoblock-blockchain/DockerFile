@@ -1,0 +1,10 @@
+# Dockerfile for ecoblock-blockchain
+FROM rust:latest
+
+WORKDIR /usr/src/ecoblock-blockchain
+COPY . .
+
+RUN cargo install --path .
+
+EXPOSE 9000
+CMD ["ecoblock-blockchain"]
