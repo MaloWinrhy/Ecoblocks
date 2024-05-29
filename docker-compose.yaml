@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ecoblocks_user
+      POSTGRES_PASSWORD: ecoblocks_password
+      POSTGRES_DB: ecoblocks_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  ecoblock-api:
+    build: ./ecoblock-api
+    depends_on:
+      - db
+      - ecoblock-blockchain
+    environment:
+      DATABASE_URL: postgres://ecoblocks_user:ecoblocks_password@db:5432/ecoblocks_db
+      BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
+    ports:
+      - "8000:8000"
+
+  ecoblock-blockchain:
+    build: ./ecoblock-blockchain
+    ports:
+      - "9000:9000"
+
+  ecoblock-webapp:
+    build: ./ecoblock-webapp
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_BACKEND_URL=http://ecoblock-api:8000
+      - REACT_APP_BLOCKCHAIN_URL=http://ecoblock-blockchain:9000
+
+volumes:
+  db_data:
