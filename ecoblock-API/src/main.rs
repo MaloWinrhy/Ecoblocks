@@ -1,58 +1,52 @@
-use actix_web::{get, web, App, HttpServer, Responder};
-//use std::sync::Arc;
-//use utoipa::{OpenApi, ToSchema};
-//use utoipa_swagger_ui::SwaggerUi;
+use actix_web::{web, App, HttpServer, Responder, HttpResponse};
+use sqlx::PgPool;
+use dotenv::dotenv;
+use std::env;
 
-#[derive(serde::Serialize)]
-struct HelloResponse {
-    message: String,
+async fn index() -> impl Responder {
+    "Hello, world!"
 }
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    web::Json(HelloResponse {
-        message: "Hello, world!".to_string(),
-    })
+async fn check_db(pool: web::Data<PgPool>) -> impl Responder {
+    match sqlx::query("SELECT 1").fetch_one(pool.get_ref()).await {
+        Ok(_) => {
+            println!("Successfully connected to the database");
+            HttpResponse::Ok().body("Database connection is OK")
+        }
+        Err(err) => {
+            println!("Failed to connect to the database: {:?}", err);
+            HttpResponse::InternalServerError().body("Failed to connect to the database")
+        }
+    }
 }
-
-// struct OpenApiDoc;
-
-// impl OpenApi for OpenApiDoc {
-//     fn openapi() -> utoipa::openapi::OpenApi {
-//         use utoipa::openapi::{InfoBuilder, License, ContactBuilder, OpenApiBuilder};
-
-//         OpenApiBuilder::new()
-//             .info(
-//                 InfoBuilder::new()
-//                     .title("Mon Application")
-//                     .version("1.0.0")
-//                     .description(Some("Description de l'application"))
-//                     .license(Some(License::new("MIT")))
-//                     .contact(Some(
-//                         ContactBuilder::new()
-//                             .name(Some("Nom de l'auteur"))
-//                             .email(Some("email@example.com"))
-//                             .build(),
-//                     ))
-//                     .build(),
-//             )
-//             .paths(utoipa::openapi::path::Paths::new())
-//             .components(Some(utoipa::openapi::Components::new()))
-//             .build()
-//     }
-// }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // let openapi = Arc::new(OpenApiDoc::openapi());
+    dotenv().ok();
+    println!("Loaded environment variables");
 
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    println!("Database URL: {}", database_url);
+
+    let pool = match PgPool::connect(&database_url).await {
+        Ok(pool) => {
+            println!("Successfully created the connection pool");
+            pool
+        }
+        Err(err) => {
+            println!("Failed to create pool: {:?}", err);
+            return Err(std::io::Error::new(std::io::ErrorKind::Other, "Failed to create pool"));
+        }
+    };
+
+    println!("Starting server at http://0.0.0.0:8080");
     HttpServer::new(move || {
-        // let openapi = openapi.clone();
         App::new()
-            .service(hello)
-            // .service(SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-docs/openapi.json", openapi))
+            .data(pool.clone())
+            .route("/", web::get().to(index))
+            .route("/health", web::get().to(check_db))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
 }

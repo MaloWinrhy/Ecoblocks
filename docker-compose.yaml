@@ -11,6 +11,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecoblock-network
 
   ecoblock-api:
     build: ./ecoblock-api
@@ -22,6 +24,8 @@ services:
       BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
     ports:
       - "8000:8000"
+    networks:
+      - ecoblock-network
 
   ecoblock-blockchain:
     build: ./ecoblock-blockchain
@@ -39,3 +43,6 @@ services:
 
 volumes:
   db_data:
+
+networks:
+  ecoblock-network:
