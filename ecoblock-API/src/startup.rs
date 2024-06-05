@@ -1,12 +1,11 @@
 use actix_web::{web, App, HttpServer};
 use sqlx::PgPool;
-use crate::features::{index, check_db, init_routes};
+use crate::features::{index, init_routes};
 
 pub fn configure_services(cfg: &mut web::ServiceConfig, pool: PgPool) {
     cfg
         .data(pool.clone())
         .route("/", web::get().to(index))
-        .route("/health", web::get().to(check_db))
         .configure(init_routes);
 }
 
