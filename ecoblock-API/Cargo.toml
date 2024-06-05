@@ -15,9 +15,23 @@ jsonwebtoken = "9.3"
 dotenv ="0.15.0"
 log = "0.4"
 env_logger = "0.11.3"
+argon2 = "0.5.3"
+diesel = { version = "2.0", features = ["postgres", "uuid", "chrono"] }
+uuid = { version = "1.0", features = ["serde", "v4"] }
+chrono = { version = "0.4", features = ["serde"] }
 
 [dev-dependencies]
 actix-rt = "2.5"
 
 [dependencies.diesel_migrations]
 version = "2.0"
+
+[print_schema]
+file = "src/schema.rs"
+
+[migrations_directory]
+path = "migrations"
+
+[[bin]]
+name = "ecoblock-api"
+path = "src/main.rs"

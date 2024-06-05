@@ -1,0 +1,1 @@
+/Users/malohenry/development/NFS/Ecoblocks/ecoblock-api/target/release/libecoblock_api.rlib: /Users/malohenry/development/NFS/Ecoblocks/ecoblock-api/src/lib.rs /Users/malohenry/development/NFS/Ecoblocks/ecoblock-api/src/models/mod.rs /Users/malohenry/development/NFS/Ecoblocks/ecoblock-api/src/models/user.rs /Users/malohenry/development/NFS/Ecoblocks/ecoblock-api/src/schema.rs

@@ -1,21 +1,20 @@
-# Use the official Rust image as a base
+# Use the official Rust image as a base image
 FROM rust:latest
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /usr/src/ecoblock-api
 
 # Copy the Cargo.toml and Cargo.lock files
 COPY Cargo.toml Cargo.lock ./
 
+# Install Diesel CLI
+RUN cargo install diesel_cli --no-default-features --features postgres
+
 # Copy the source code
-COPY src ./src
+COPY . .
 
-# Build the application
-RUN cargo install --path .
+# Build the project
+RUN cargo build --release
 
-# Expose the port the application will run on
-EXPOSE 8000
-
-# Run the application
-CMD ["ecoblock-api"]
-
+# Set the startup command
+CMD ["./target/release/ecoblock-api"]
