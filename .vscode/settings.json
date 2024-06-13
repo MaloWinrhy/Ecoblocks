@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "DOCKER",
-        "API"
+        "API",
+        "WEBAPP"
     ]
 }
