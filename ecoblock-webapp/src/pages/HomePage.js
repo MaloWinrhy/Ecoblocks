@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Header from '../components/common/Header';
+import MainSection from '../components/home/MainSection';
+import StatsSection from '../components/home/StatsSection';
+import PresentationSection from '../components/home/PresentationSection';
+import Footer from '../components/common/Footer';
+import './HomePage.css';
 
-function App() {
+const HomePage = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="HomePage">
+      <Header />
+      <MainSection />
+      <PresentationSection /> {/* Include the new PresentationSection component */}
+      <StatsSection />
+      <Footer />
     </div>
   );
 }
 
-export default App;
+export default HomePage;

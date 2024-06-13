@@ -1,0 +1,28 @@
+.presentation-section {
+  padding: 50px 14%;
+  background-color: #fffef8;
+}
+
+.square-section {
+  display: flex;
+  justify-content: center;
+}
+
+.square {
+  width: 350px;
+  height: 350px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.square:hover {
+  background-color: #4F7648;
+}
+
+.square.clicked {
+  background-color: #4F7648;
+}
