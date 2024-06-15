@@ -1,0 +1,65 @@
+.products-section {
+  text-align: left;
+  padding: 40px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-card {
+  flex: 0 0 auto;
+  width: 300px;
+  height: 300px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 16px;
+  text-align: left;
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+}
+
+
+.scroll-buttons {
+  position: absolute;
+  top: 20%;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  transform: translateY(-50%);
+}
+
+.scroll-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.scroll-button.left {
+  right: 60px;
+}
+
+.scroll-button.right {
+  right: 20px;
+}
