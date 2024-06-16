@@ -4,6 +4,7 @@ import MainSection from '../components/home/MainSection';
 import StatsSection from '../components/home/StatsSection';
 import ProductsSection from '../components/home/ProductsSection';
 import PresentationSection from '../components/home/PresentationSection';
+import Newsletter from '../components/newsletter/Newsletter';
 import Footer from '../components/common/Footer';
 import './HomePage.css';
 
@@ -15,6 +16,7 @@ const HomePage = () => {
       <PresentationSection />
       <ProductsSection />
       <StatsSection />
+      <Newsletter />
       <Footer />
     </div>
   );
