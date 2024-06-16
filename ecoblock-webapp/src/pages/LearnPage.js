@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../components/common/Header';
+import Footer from '../components/common/Footer';
 import Sidebar from '../components/common/Sidebar';
 import Card from '../components/learn/Card';
 import './LearnPage.css';
@@ -42,6 +43,7 @@ const LearnPage = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

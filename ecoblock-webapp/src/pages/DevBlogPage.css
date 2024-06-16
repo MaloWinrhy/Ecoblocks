@@ -6,10 +6,12 @@
 .devblog-page h1 {
   font-size: 32px;
   margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 .blog-posts {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin: 20px;
 }
