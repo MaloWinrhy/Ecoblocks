@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../components/common/Header';
 import Sidebar from '../components/common/Sidebar';
 import Card from '../components/learn/Card';
 import './LearnPage.css';
@@ -6,6 +7,8 @@ import './LearnPage.css';
 const LearnPage = () => {
   return (
     <div className="learn-page">
+                <Header />
+
       <div className="main-content">
         <Sidebar />
         <main className="content">

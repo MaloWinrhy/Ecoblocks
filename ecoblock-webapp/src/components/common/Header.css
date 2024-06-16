@@ -7,6 +7,13 @@
   padding: 20px 10%;
 }
 
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
 .logo-container {
   display: flex;
   align-items: center;
@@ -55,7 +62,12 @@
   background-color: var(--color-primary);
 }
 
+.nav .active {
+  background-color: var(--color-primary);
+}
+
 .connect-container {
+  margin-right: 5%;
   display: flex;
   justify-content: flex-end;
 }
