@@ -1,0 +1,21 @@
+.PrivacyPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .content h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+
+  .content p {
+    line-height: 1.6;
+  }
