@@ -1,75 +1,75 @@
+@import '../../variables.css';
+
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 10%;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10%;
+}
 
-  .logo-container {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
+.logo-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 
-  .logo-svg {
-    width: 50px;
-    height: auto;
-    margin-right: 10px;
-    transition: fill 0.3s ease;
-  }
+.logo-svg {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+  transition: fill 0.3s ease;
+}
 
-  .logo-text {
-    font-size: 24px;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
 
+.logo-container:hover .logo-text {
+  color: var(--color-primary);
+}
 
-  .logo-container:hover .logo-text {
-    color: #4F7648;
-  }
+.nav {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-secondary);
+  border-radius: 5px;
+  z-index: 1001;
+  box-shadow: 0 4px 6px var(--color-background-light);
+}
 
+.nav a {
+  text-decoration: none;
+  color: var(--color-white);
+  border-radius: 5px;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
+}
 
-  .nav {
-    display: flex;
-    justify-content: center;
-    position: sticky;
-    top: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #283747;
-    border-radius: 5px;
-    z-index: 1001;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+.nav a:hover {
+  background-color: var(--color-primary);
+}
 
-  .nav a {
-    text-decoration: none;
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease;
-  }
+.connect-container {
+  display: flex;
+  justify-content: flex-end;
+}
 
-  .nav a:hover {
-    background-color: #4F7648;
-  }
+.connect-button {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-  .connect-container {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .connect-button {
-    background-color: #4F7648;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    margin-left: 20px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-
-  .connect-button:hover {
-    background-color: #9E9E9E;
-  }
+.connect-button:hover {
+  background-color: var(--color-primary-hover);
+}
