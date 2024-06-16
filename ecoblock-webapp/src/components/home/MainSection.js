@@ -8,6 +8,7 @@ const MainSection = () => {
       <div className="image-placeholder">
         <img src={headImage} alt="Header" className="head-img" />
       </div>
+      
     </main>
   );
 }

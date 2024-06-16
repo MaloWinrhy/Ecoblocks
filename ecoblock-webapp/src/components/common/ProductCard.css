@@ -11,8 +11,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     position: relative;
-    width: 300px; /* Taille fixe pour la largeur */
-    height: 300px; /* Taille fixe pour la hauteur */
+    width: 400px;
+    height: 400px;
     box-sizing: border-box;
   }
 
