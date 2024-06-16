@@ -1,0 +1,13 @@
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--color-background-light);
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 200px;
+  }
+
+  .card h3 {
+    font-size: 20px;
+    color: var(--color-primary);
+  }
