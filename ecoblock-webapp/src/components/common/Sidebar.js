@@ -6,11 +6,13 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <nav>
+        {/* Getting Started section */}
         <h2>Getting Started</h2>
         <ul>
           <li><Link to="#introduction">Introduction</Link></li>
           <li><Link to="#vision-and-mission">Vision and Mission</Link></li>
         </ul>
+        {/* For Users section */}
         <h2>For Users</h2>
         <ul>
           <li><Link to="#ecoblocks-iot">EcoBlocks IoT</Link></li>
@@ -23,6 +25,7 @@ const Sidebar = () => {
           <li><Link to="#explorer">EcoBlocks Explorer</Link></li>
           <li><Link to="#participate">Participate</Link></li>
         </ul>
+        {/* For Developers section */}
         <h2>For Developers</h2>
         <ul>
           <li><Link to="#indexer">SubQuery Indexer</Link></li>

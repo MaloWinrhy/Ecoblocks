@@ -20,9 +20,9 @@
 }
 
 .square:hover {
-  background-color: #4F7648;
+  background-color: var(--color-primary);
 }
 
 .square.clicked {
-  background-color: #4F7648;
+  background-color: var(--color-primary);
 }
