@@ -13,7 +13,6 @@ pub fn create_user(conn: &mut PgConnection, username: &str, email: &str, passwor
         .values(&new_user)
         .get_result(conn)
 }
-
 pub fn get_user_by_id(conn: &mut PgConnection, user_id: i32) -> QueryResult<User> {
     users::table.find(user_id).get_result(conn)
 }

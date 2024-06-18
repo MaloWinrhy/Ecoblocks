@@ -6,7 +6,7 @@ use diesel::r2d2::{self, ConnectionManager};
 use diesel::pg::PgConnection;
 use dotenvy::dotenv;
 use crate::config::Config;
-use crate::users::{index, test_db_connection, create_user_handler};
+use crate::users::routes::init_user_routes;
 
 mod config;
 mod db;
@@ -23,12 +23,12 @@ async fn main() -> std::io::Result<()> {
     let pool = r2d2::Pool::builder().build(manager).expect("Failed to create pool.");
 
     HttpServer::new(move || {
-        App::new()
+        let app = App::new()
             .app_data(web::Data::new(pool.clone()))
             .app_data(web::Data::new(config.database_url.clone()))
-            .route("/", web::get().to(index))
-            .route("/test_db_connection", web::get().to(test_db_connection))
-            .route("/create_user", web::post().to(create_user_handler))
+            .configure(init_user_routes);
+
+        app
     })
     .bind(config.server_address)?
     .run()
