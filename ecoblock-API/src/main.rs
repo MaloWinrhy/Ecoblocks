@@ -3,7 +3,6 @@ extern crate dotenvy;
 
 use actix_web::{web, App, HttpServer, Responder, HttpResponse};
 use dotenvy::dotenv;
-use std::env;
 use crate::config::Config;
 use crate::db::establish_connection;
 use crate::handlers::{index, test_db_connection};
