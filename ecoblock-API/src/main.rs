@@ -5,20 +5,19 @@ use actix_web::{web, App, HttpServer};
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::pg::PgConnection;
 use dotenvy::dotenv;
-use crate::handlers::{index, test_db_connection, create_user_handler};
+use crate::config::Config;
+use crate::users::{index, test_db_connection, create_user_handler};
 
-mod handlers;
-mod models;
-mod schema;
-mod actions;
 mod config;
 mod db;
+mod schema;
+mod users;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
-    let config = config::Config::from_env().expect("Failed to load configuration");
+    let config = Config::from_env().expect("Failed to load configuration");
 
     let manager = ConnectionManager::<PgConnection>::new(&config.database_url);
     let pool = r2d2::Pool::builder().build(manager).expect("Failed to create pool.");
