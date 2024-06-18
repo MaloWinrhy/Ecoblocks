@@ -48,6 +48,7 @@
   border-radius: 5px;
   z-index: 1001;
   box-shadow: 0 4px 6px var(--color-background-light);
+  padding: 0 1px;
 }
 
 .nav a {
@@ -55,6 +56,7 @@
   color: var(--color-white);
   border-radius: 5px;
   padding: 10px 15px;
+  margin: 2px 1px;
   transition: background-color 0.3s ease;
 }
 

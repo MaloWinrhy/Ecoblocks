@@ -1,21 +1,41 @@
-use actix_web::{web, App, HttpServer};
+extern crate diesel;
+extern crate dotenvy;
 
-mod lib;
-mod startup;
+use actix_web::{web, App, HttpServer, Responder, HttpResponse};
+use dotenvy::dotenv;
+use std::env;
+use crate::config::Config;
+use crate::db::establish_connection;
+use crate::handlers::{index, test_db_connection};
 
+mod config;
+mod db;
+mod handlers;
+//mod models;
+//mod schema;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Initialize your application state
-    let app_state = web::Data::new(lib::AppState::new());
+    dotenv().ok();
 
-    // Configure and start the HTTP server
-    HttpServer::new(move || {
+    let config = Config::from_env().expect("Failed to load configuration");
+
+    match establish_connection(&config.database_url) {
+        Ok(_) => {
+            println!("Connected to the database successfully!");
+        }
+        Err(err) => {
+            eprintln!("Failed to connect to the database: {}", err);
+            std::process::exit(1);
+        }
+    }
+
+    HttpServer::new(|| {
         App::new()
-            .app_data(app_state.clone()) // Share the application state
-            .configure(startup::config) // Configure routes and middleware
+            .route("/", web::get().to(index))
+            .route("/test_db_connection", web::get().to(test_db_connection))
     })
-    .bind("127.0.0.1:8000")?
+    .bind(config.server_address)?
     .run()
     .await
 }
