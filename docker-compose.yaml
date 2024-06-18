@@ -21,6 +21,7 @@ services:
       - ecoblock-blockchain
     environment:
       DATABASE_URL: postgres://ecoblocks_user:ecoblocks_password@db:5432/ecoblocks_db
+      SERVER_ADDRESS: "0.0.0.0:8000"
       BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
     ports:
       - "8000:8000"
@@ -31,6 +32,8 @@ services:
     build: ./ecoblock-blockchain
     ports:
       - "9000:9000"
+    networks:
+      - ecoblock-network
 
   ecoblock-webapp:
     build: ./ecoblock-webapp
@@ -40,6 +43,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_BACKEND_URL=http://ecoblock-api:8000
       - REACT_APP_BLOCKCHAIN_URL=http://ecoblock-blockchain:9000
+    networks:
+      - ecoblock-network
 
 volumes:
   db_data:
