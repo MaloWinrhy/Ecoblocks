@@ -8,3 +8,15 @@ diesel::table! {
         updated_at -> Timestamp,
     }
 }
+
+diesel::table! {
+    posts (id) {
+        id -> Int4,
+        title -> Varchar,
+        content -> Text,
+        image -> Nullable<Varchar>,
+        tags -> Array<Text>,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
