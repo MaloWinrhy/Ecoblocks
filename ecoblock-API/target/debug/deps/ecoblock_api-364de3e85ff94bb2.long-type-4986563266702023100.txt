@@ -1,1 +1,0 @@
-(models::users::columns::id, models::users::columns::username, models::users::columns::email, models::users::columns::password_hash, models::users::columns::created_at, models::users::columns::updated_at)

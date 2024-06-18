@@ -1,1 +1,0 @@
-UpdateStatement<table, _, query_builder::update_statement::changeset::Assign<query_builder::update_statement::changeset::ColumnWrapperForUpdate<columns::email>, diesel::expression::bound::Bound<diesel::sql_types::Text, &str>>>
