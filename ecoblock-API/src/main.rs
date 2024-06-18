@@ -1,38 +1,35 @@
 extern crate diesel;
 extern crate dotenvy;
 
-use actix_web::{web, App, HttpServer, Responder, HttpResponse};
+use actix_web::{web, App, HttpServer};
+use diesel::r2d2::{self, ConnectionManager};
+use diesel::pg::PgConnection;
 use dotenvy::dotenv;
-use crate::config::Config;
-use crate::db::establish_connection;
-use crate::handlers::{index, test_db_connection};
+use crate::handlers::{index, test_db_connection, create_user_handler};
 
+mod handlers;
+mod models;
+mod schema;
+mod actions;
 mod config;
 mod db;
-mod handlers;
-//mod models;
-//mod schema;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
-    let config = Config::from_env().expect("Failed to load configuration");
+    let config = config::Config::from_env().expect("Failed to load configuration");
 
-    match establish_connection(&config.database_url) {
-        Ok(_) => {
-            println!("Connected to the database successfully!");
-        }
-        Err(err) => {
-            eprintln!("Failed to connect to the database: {}", err);
-            std::process::exit(1);
-        }
-    }
+    let manager = ConnectionManager::<PgConnection>::new(&config.database_url);
+    let pool = r2d2::Pool::builder().build(manager).expect("Failed to create pool.");
 
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
+            .app_data(web::Data::new(pool.clone()))
+            .app_data(web::Data::new(config.database_url.clone()))
             .route("/", web::get().to(index))
             .route("/test_db_connection", web::get().to(test_db_connection))
+            .route("/create_user", web::post().to(create_user_handler))
     })
     .bind(config.server_address)?
     .run()
