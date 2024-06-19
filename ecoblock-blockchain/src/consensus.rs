@@ -1,3 +1,5 @@
+use crate::block::Block;
+
 pub struct Consensus;
 
 impl Consensus {
