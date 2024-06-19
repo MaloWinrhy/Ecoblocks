@@ -7,6 +7,16 @@ pub struct Blockchain {
 }
 
 impl Blockchain {
+    pub fn new() -> Self {
+        let mut blockchain = Blockchain { chain: Vec::new() };
+        blockchain.create_genesis_block();
+        blockchain
+    }
+
+    fn create_genesis_block(&mut self) {
+        let genesis_block = Block::new(0, current_time(), String::from("0"), String::from("Genesis Block"));
+        self.chain.push(genesis_block);
+    }
 
 }
 
