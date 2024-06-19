@@ -18,6 +18,16 @@ impl Blockchain {
         self.chain.push(genesis_block);
     }
 
+    pub fn add_block(&mut self, data: String) {
+        let previous_block = self.chain.last().unwrap();
+        let new_block = Block::new(
+            previous_block.index + 1,
+            current_time(),
+            previous_block.hash.clone(),
+            data,
+        );
+        self.chain.push(new_block);
+    }
 }
 
 fn current_time() -> u128 {
