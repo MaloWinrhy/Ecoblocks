@@ -6,7 +6,7 @@ use chrono::NaiveDateTime;
 #[derive(Queryable, Insertable, AsChangeset, Serialize, Deserialize, Debug)]
 #[diesel(table_name = users)]
 pub struct User {
-    pub id: i32,
+    pub id: i64,
     pub username: String,
     pub email: String,
     pub password_hash: String,
@@ -17,6 +17,7 @@ pub struct User {
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = users)]
 pub struct NewUser {
+    pub id: i64,
     pub username: String,
     pub email: String,
     pub password_hash: String,

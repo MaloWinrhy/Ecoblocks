@@ -13,3 +13,7 @@ uuid = { version = "1", features = ["v4"] }
 chrono = { version = "0.4", features = ["serde"] }
 rand = "0.8"
 bcrypt = "0.15.1"
+lazy_static = "1.4.0"
+log = "0.4.8"
+r2d2 = "0.8.8"
+rs-snowflake = "0.6.0"

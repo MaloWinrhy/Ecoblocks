@@ -39,7 +39,7 @@ pub async fn create_post_handler(
 
 pub async fn get_post_by_id_handler(
     pool: web::Data<DbPool>,
-    post_id: web::Path<i32>,
+    post_id: web::Path<i64>,
 ) -> impl Responder {
     let mut conn = pool.get().expect("Failed to get DB connection");
     let post_id = post_id.into_inner();
@@ -75,7 +75,7 @@ pub async fn get_all_posts_handler(
 
 pub async fn delete_post_handler(
     pool: web::Data<DbPool>,
-    post_id: web::Path<i32>,
+    post_id: web::Path<i64>,
 ) -> impl Responder {
     let mut conn = pool.get().expect("Failed to get DB connection");
     let post_id = post_id.into_inner();

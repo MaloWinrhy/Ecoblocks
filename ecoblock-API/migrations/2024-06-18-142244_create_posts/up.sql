@@ -1,5 +1,5 @@
 CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     title VARCHAR NOT NULL,
     content TEXT NOT NULL,
     image VARCHAR,

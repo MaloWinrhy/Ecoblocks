@@ -602,7 +602,11 @@ dependencies = [
  "chrono",
  "diesel",
  "dotenvy",
+ "lazy_static",
+ "log",
+ "r2d2",
  "rand",
+ "rs-snowflake",
  "serde",
  "serde_json",
  "uuid",
@@ -974,6 +978,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4345964bb142484797b161f473a503a434de77149dd8c7427788c6e13379388"
 
 [[package]]
+name = "lazy_static"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
+
+[[package]]
 name = "libc"
 version = "0.2.155"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1257,6 +1267,12 @@ name = "regex-syntax"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
+
+[[package]]
+name = "rs-snowflake"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e60ef3b82994702bbe4e134d98aadca4b49ed04440148985678d415c68127666"
 
 [[package]]
 name = "rustc-demangle"

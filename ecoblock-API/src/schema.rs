@@ -1,6 +1,6 @@
 diesel::table! {
     users (id) {
-        id -> Int4,
+        id -> BigInt,
         username -> Varchar,
         email -> Varchar,
         password_hash -> Varchar,
@@ -11,7 +11,7 @@ diesel::table! {
 
 diesel::table! {
     posts (id) {
-        id -> Int4,
+        id -> BigInt,
         title -> Varchar,
         content -> Text,
         image -> Nullable<Varchar>,

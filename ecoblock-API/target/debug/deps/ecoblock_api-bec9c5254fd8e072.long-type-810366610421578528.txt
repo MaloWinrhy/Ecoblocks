@@ -1,0 +1,1 @@
+(i32, std::string::String, std::string::String, std::option::Option<std::string::String>, Vec<std::string::String>, NaiveDateTime, NaiveDateTime)
