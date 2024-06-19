@@ -1,7 +1,7 @@
 use actix_web::web;
 
 mod posts;
-mod users;
+pub(crate) mod users;
 
 
 pub fn init_routes(cfg: &mut web::ServiceConfig) {

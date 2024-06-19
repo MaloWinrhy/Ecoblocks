@@ -11,6 +11,7 @@ mod config;
 mod db;
 mod routes;
 mod utils;
+mod middleware;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
