@@ -14,13 +14,24 @@ services:
     networks:
       - ecoblock-network
 
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - ecoblock-network
+
   ecoblock-api:
     build: ./ecoblock-api
     depends_on:
       - db
+      - mongodb
       - ecoblock-blockchain
     environment:
       DATABASE_URL: postgres://ecoblocks_user:ecoblocks_password@db:5432/ecoblocks_db
+      MONGO_URL: mongodb://mongodb:27017
       SERVER_ADDRESS: "0.0.0.0:8000"
       BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
     ports:
@@ -48,6 +59,7 @@ services:
 
 volumes:
   db_data:
+  mongodb_data:
 
 networks:
   ecoblock-network:
