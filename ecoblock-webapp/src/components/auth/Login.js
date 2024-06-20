@@ -1,12 +1,23 @@
+// src/components/auth/Login.js
 import React, { useState } from 'react';
 import './Auth.css';
+import { login, setToken } from '../../services/authService';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    try {
+      const response = await login(email, password);
+      setToken(response.token);
+      window.location.href = '/';
+    } catch (error) {
+      setError('Invalid email or password');
+    }
   };
 
   return (
@@ -21,6 +32,7 @@ const Login = () => {
           <label>Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
+        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>

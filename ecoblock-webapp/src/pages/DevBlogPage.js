@@ -3,7 +3,7 @@ import './DevBlogPage.css';
 import BlogPost from '../components/blog/BlogPost';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
-import { getBlogPosts } from '../services/apiServices';
+import { getBlogPosts } from '../services/postsServices';
 
 const DevBlogPage = () => {
   const [blogPosts, setBlogPosts] = useState([]); // Initialiser avec un tableau vide
