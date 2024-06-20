@@ -87,3 +87,17 @@
 .connect-button:hover {
   background-color: var(--color-primary-hover);
 }
+
+.disconnect-button {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.disconnect-button:hover {
+  background-color: var(--color-danger-hover);
+}

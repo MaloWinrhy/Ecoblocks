@@ -1,9 +1,9 @@
     import React, { useState } from 'react';
-    import Register from './Register';
-    import Login from './Login';
-    import './Auth.css';
-    import Header from '../common/Header';
-    import Footer from '../common/Footer';
+    import Register from '../components/auth/Register';
+    import Login from '../components/auth/Login';
+    import './AuthPage.css';
+    import Header from '../components/common/Header';
+    import Footer from '../components/common/Footer';
 
     const Auth = () => {
     const [isRegister, setIsRegister] = useState(true);

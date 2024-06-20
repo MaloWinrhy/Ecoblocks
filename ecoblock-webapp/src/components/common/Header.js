@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.css';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
+import { getToken, clearToken } from '../../services/authServices';
 
-// Header component
 const Header = () => {
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      setIsConnected(true);
+    }
+  }, []);
+
+  const handleDisconnect = () => {
+    clearToken();
+    setIsConnected(false);
+    window.location.href = '/';
+  };
+
   return (
     <header className="header">
       {/* Logo */}
@@ -20,9 +35,13 @@ const Header = () => {
         <NavLink to="/learn" activeClassName="active">Learn</NavLink>
         <NavLink to="/devblog" activeClassName="active">DevBlog</NavLink>
       </nav>
-      {/* Connect button */}
+      {/* Connect/Disconnect button */}
       <div className="connect-container">
-        <a href="#connect" className="connect-button">Connect</a>
+        {isConnected ? (
+          <button onClick={handleDisconnect} className="disconnect-button">Disconnect</button>
+        ) : (
+          <NavLink to="/auth" className="connect-button">Connect</NavLink>
+        )}
       </div>
     </header>
   );

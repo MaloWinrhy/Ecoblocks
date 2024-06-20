@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from './authService';
+import { getToken } from './authServices';
 
 const API_URL = 'http://localhost:8000';
 

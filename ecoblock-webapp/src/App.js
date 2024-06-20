@@ -6,7 +6,7 @@ import DevBlogPage from './pages/DevBlogPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import './App.css';
-import Auth from './components/auth/Auth';
+import Auth from './pages/AuthPage';
 
 function App() {
   return (

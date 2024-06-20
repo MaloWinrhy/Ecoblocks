@@ -1,7 +1,6 @@
-// src/components/auth/Login.js
 import React, { useState } from 'react';
 import './Auth.css';
-import { login, setToken } from '../../services/authService';
+import { login, setToken } from '../../services/authServices';
 
 const Login = () => {
   const [email, setEmail] = useState('');
