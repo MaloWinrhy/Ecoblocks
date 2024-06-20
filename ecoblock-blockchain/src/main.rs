@@ -7,15 +7,15 @@ use log::info;
 mod db;
 mod block;
 mod tangle;
-mod consensus;
 mod wallet;
 
 use wallet::Wallet;
 use tangle::Tangle;
+use block::{Data, Environment, Location};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct NewBlockRequest {
-    data: String,
+    data: Data,
     proposer_id: String,
 }
 
@@ -27,11 +27,10 @@ impl warp::reject::Reject for CustomError {}
 #[tokio::main]
 async fn main() {
     let db = db::init_db().await.expect("Failed to initialize database");
-    let tangle = Arc::new(Mutex::new(Tangle::new(db).await));
+    let wallet = Arc::new(Mutex::new(Wallet::new()));
+    let tangle = Arc::new(Mutex::new(Tangle::new(db, Arc::clone(&wallet)).await));
 
     env_logger::init();
-
-    let wallet = Arc::new(Mutex::new(Wallet::new()));
 
     let get_chain = {
         let tangle = Arc::clone(&tangle);
