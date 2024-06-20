@@ -20,3 +20,16 @@ diesel::table! {
         updated_at -> Timestamp,
     }
 }
+
+diesel::table! {
+    products (id) {
+        id -> BigInt,
+        title -> Varchar,
+        content -> Text,
+        image -> Nullable<Varchar>,
+        tags -> Array<Text>,
+        created_at -> Timestamp,
+        updated_at -> Timestamp,
+    }
+}
+
