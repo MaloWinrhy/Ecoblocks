@@ -1,6 +1,4 @@
-extern crate diesel;
-extern crate dotenvy;
-
+use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::pg::PgConnection;
@@ -24,11 +22,18 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header()
+                    .max_age(3600)
+            )
             .app_data(web::Data::new(pool.clone()))
             .app_data(web::Data::new(config.database_url.clone()))
             .configure(routes::init_routes)
     })
-    .bind(config.server_address)?
+    .bind("0.0.0.0:8000")?
     .run()
     .await
 }

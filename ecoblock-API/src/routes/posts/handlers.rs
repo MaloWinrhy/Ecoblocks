@@ -62,16 +62,14 @@ pub async fn get_all_posts_handler(
     let mut conn = pool.get().expect("Failed to get DB connection");
 
     match get_all_posts(&mut conn) {
-        Ok(posts) => HttpResponse::Ok().json(ApiResponse {
-            status: "success".to_string(),
-            data: posts,
-        }),
+        Ok(posts) => HttpResponse::Ok().json(posts), // Retourner directement les posts
         Err(_) => HttpResponse::InternalServerError().json(ApiError {
             status: "error".to_string(),
             message: "Failed to fetch posts".to_string(),
         }),
     }
 }
+
 
 pub async fn delete_post_handler(
     pool: web::Data<DbPool>,
