@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:latest
@@ -31,7 +32,7 @@ services:
       - ecoblock-blockchain
     environment:
       DATABASE_URL: postgres://ecoblocks_user:ecoblocks_password@db:5432/ecoblocks_db
-      MONGO_URL: mongodb://mongodb:27017
+      MONGO_URL: mongodb://mongodb:27017/Ecoblocks
       SERVER_ADDRESS: "0.0.0.0:8000"
       BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
     ports:

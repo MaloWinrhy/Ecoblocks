@@ -1,64 +1,85 @@
-mod block;
-mod blockchain;
-mod transaction;
-mod wallet;
-mod consensus;
-
-use blockchain::Blockchain;
-use wallet::Wallet;
-use warp::Filter;
 use serde::{Serialize, Deserialize};
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use warp::Filter;
+use tokio::sync::Mutex;
+use log::info;
 
-// Structure pour recevoir des nouvelles données de bloc via une requête HTTP
+mod db;
+mod block;
+mod tangle;
+mod consensus;
+mod wallet;
+
+use wallet::Wallet;
+use tangle::Tangle;
+
 #[derive(Serialize, Deserialize, Debug)]
 struct NewBlockRequest {
     data: String,
+    proposer_id: String,
 }
+
+#[derive(Debug)]
+struct CustomError(String);
+
+impl warp::reject::Reject for CustomError {}
 
 #[tokio::main]
 async fn main() {
-    // Utilisation d'Arc et Mutex pour permettre un accès partagé et sécurisé aux structures
-    let blockchain = Arc::new(Mutex::new(Blockchain::new()));
+    let db = db::init_db().await.expect("Failed to initialize database");
+    let tangle = Arc::new(Mutex::new(Tangle::new(db).await));
+
+    env_logger::init();
+
     let wallet = Arc::new(Mutex::new(Wallet::new()));
 
-    // Endpoint pour récupérer la chaîne de blocs
     let get_chain = {
-        let blockchain = Arc::clone(&blockchain);
+        let tangle = Arc::clone(&tangle);
         warp::path!("chain")
             .and(warp::get())
-            .map(move || {
-                let blockchain = blockchain.lock().unwrap();
-                warp::reply::json(&blockchain.chain)
+            .and_then(move || {
+                let tangle = Arc::clone(&tangle);
+                async move {
+                    let tangle = tangle.lock().await;
+                    Ok::<_, warp::Rejection>(warp::reply::json(&tangle.blocks))
+                }
             })
     };
 
-    // Endpoint pour ajouter un nouveau bloc à la chaîne
     let add_block = {
-        let blockchain = Arc::clone(&blockchain);
+        let tangle = Arc::clone(&tangle);
         warp::path!("add_block")
             .and(warp::post())
             .and(warp::body::json())
-            .map(move |new_block: NewBlockRequest| {
-                let mut blockchain = blockchain.lock().unwrap();
-                blockchain.add_block(new_block.data);
-                warp::reply::json(&blockchain.chain)
+            .and_then(move |new_block: NewBlockRequest| {
+                let tangle = Arc::clone(&tangle);
+                async move {
+                    info!("Received new block request: {:?}", new_block);
+                    let mut tangle = tangle.lock().await;
+                    match tangle.add_block(new_block.data, new_block.proposer_id).await {
+                        Ok(_) => Ok::<_, warp::Rejection>(warp::reply::json(&tangle.blocks)),
+                        Err(err) => Err(warp::reject::custom(CustomError(err))),
+                    }
+                }
             })
     };
 
-    // Endpoint pour vérifier le solde d'un portefeuille
     let get_wallet = {
         let wallet = Arc::clone(&wallet);
         warp::path!("wallet" / String)
             .and(warp::get())
-            .map(move |address: String| {
-                let wallet = wallet.lock().unwrap();
-                let balance = wallet.balances.get(&address).cloned().unwrap_or(0);
-                warp::reply::json(&balance)
+            .and_then(move |address: String| {
+                let wallet = Arc::clone(&wallet);
+                async move {
+                    let wallet = wallet.lock().await;
+                    let balance = wallet.balances.get(&address).cloned().unwrap_or(0);
+                    Ok::<_, warp::Rejection>(warp::reply::json(&balance))
+                }
             })
     };
 
     let routes = get_chain.or(add_block).or(get_wallet);
 
+    info!("Starting the server at http://localhost:9000");
     warp::serve(routes).run(([0, 0, 0, 0], 9000)).await;
 }
