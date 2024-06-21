@@ -47,6 +47,27 @@ const DevBlogPage = () => {
 
   const totalPages = Math.ceil(total / limit);
 
+  const renderPageNumbers = () => {
+    const maxPagesToShow = 10;
+    const startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
+    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    const pageNumbers = [];
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => setPage(i)}
+          className={`page-number ${page === i ? 'active' : ''}`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return pageNumbers;
+  };
+
   return (
     <div className="devblog-page">
       <Header />
@@ -75,7 +96,7 @@ const DevBlogPage = () => {
         <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1}>
           Previous
         </button>
-        <span>Page {page} of {totalPages}</span>
+        {renderPageNumbers()}
         <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
           Next
         </button>
