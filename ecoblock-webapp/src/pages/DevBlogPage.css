@@ -9,32 +9,23 @@
   margin-left: 20px;
 }
 
-.search-bar,
-.filters,
-.tag-filters {
+.search-bar {
   margin: 20px;
-}
-
-.filters,
-.tag-filters {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 }
 
-.filters button,
-.tag-filters button {
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
   padding: 10px;
-  border: none;
-  background-color: #f1f1f1;
-  cursor: pointer;
+  border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.filters button.selected,
-.tag-filters button.selected {
-  background-color: #007bff;
-  color: #fff;
+.search-bar .tag-select {
+  width: 300px;
 }
 
 .blog-posts {
@@ -55,7 +46,7 @@
 .pagination button {
   background-color: var(--color-primary);
   border: none;
-  max-width: 150px ;
+  max-width: 150px;
   padding: 5px 10px;
   margin: 0 5px;
   border-radius: 5px;

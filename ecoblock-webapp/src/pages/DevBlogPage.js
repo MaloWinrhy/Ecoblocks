@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import './DevBlogPage.css';
 import BlogPost from '../components/blog/BlogPost';
 import Header from '../components/common/Header';
@@ -9,17 +10,18 @@ const DevBlogPage = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [displayedPosts, setDisplayedPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10); // Fixed limit of 10 per page
+  const [limit] = useState(10);
   const [total, setTotal] = useState(0);
-  const [tags, setTags] = useState([]); // Set available tags
+  const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const posts = await getAllBlogPosts();
         setAllPosts(posts);
-        setTags(Array.from(new Set(posts.flatMap(post => post.tags)))); // Extract unique tags
+        setTags(Array.from(new Set(posts.flatMap(post => post.tags))));
         setTotal(posts.length);
       } catch (error) {
         console.error("Failed to fetch blog posts", error);
@@ -30,19 +32,24 @@ const DevBlogPage = () => {
   }, []);
 
   useEffect(() => {
-    const filteredPosts = selectedTags.length > 0
-      ? allPosts.filter(post => selectedTags.every(tag => post.tags.includes(tag)))
-      : allPosts;
+    const filteredPosts = allPosts.filter(post =>
+      (selectedTags.length === 0 || selectedTags.every(tag => post.tags.includes(tag))) &&
+      (searchQuery === "" || post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.content.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
 
     setTotal(filteredPosts.length);
     setDisplayedPosts(filteredPosts.slice((page - 1) * limit, page * limit));
-  }, [allPosts, page, limit, selectedTags]);
+  }, [allPosts, page, limit, selectedTags, searchQuery]);
 
-  const handleTagChange = (tag) => {
-    setSelectedTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    );
-    setPage(1); // Reset to first page on filter change
+  const handleTagChange = (selectedOptions) => {
+    const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setSelectedTags(selectedValues);
+    setPage(1);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setPage(1);
   };
 
   const totalPages = Math.ceil(total / limit);
@@ -68,20 +75,29 @@ const DevBlogPage = () => {
     return pageNumbers;
   };
 
+  const tagOptions = tags.map(tag => ({ value: tag, label: tag }));
+
   return (
     <div className="devblog-page">
       <Header />
       <h1>Latest News</h1>
-      <div className="filters">
-        {tags.map(tag => (
-          <button
-            key={tag}
-            onClick={() => handleTagChange(tag)}
-            className={selectedTags.includes(tag) ? 'selected' : ''}
-          >
-            {tag}
-          </button>
-        ))}
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        <Select
+          isMulti
+          name="tags"
+          options={tagOptions}
+          className="tag-select"
+          classNamePrefix="select"
+          placeholder="Filter by tags"
+          onChange={handleTagChange}
+          value={tagOptions.filter(option => selectedTags.includes(option.value))}
+        />
       </div>
       <div className="blog-posts">
         {displayedPosts.length > 0 ? (
