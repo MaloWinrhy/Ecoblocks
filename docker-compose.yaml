@@ -60,6 +60,15 @@ services:
     networks:
       - ecoblock-network
 
+  ecoblock-cms:
+    build: ./ecoblock-cms
+    ports:
+      - "3001:3001"
+    environment:
+      - REACT_APP_BACKEND_URL=http://ecoblock-api:8000
+    networks:
+      - ecoblock-network
+
 volumes:
   db_data:
   mongodb_data:
