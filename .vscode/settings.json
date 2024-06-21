@@ -3,6 +3,7 @@
         "DOCKER",
         "API",
         "WEBAPP",
-        "BLOCKCHAIN"
+        "BLOCKCHAIN",
+        "CMS"
     ]
 }
