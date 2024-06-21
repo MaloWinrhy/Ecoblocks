@@ -1,14 +1,4 @@
--- Ensure the 'postgres' role exists
-DO
-$$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'postgres') THEN
-        CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
-    END IF;
-END
-$$;
-
--- Create 'ecoblocks_user' role if it does not exist
+-- Ensure the 'ecoblocks_user' role exists
 DO
 $$
 BEGIN
@@ -27,3 +17,12 @@ BEGIN
     END IF;
 END
 $$;
+
+-- Connect to 'ecoblocks_db' and create a table
+\c ecoblocks_db
+
+-- Create a sample table
+CREATE TABLE IF NOT EXISTS sample_table (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);

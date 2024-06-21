@@ -1,11 +1,14 @@
-
-import React from 'react';import './BlogPost.css';
+import React from 'react';
+import './BlogPost.css';
+import { format, parseISO } from 'date-fns';
 
 const BlogPost = ({ post }) => {
+  const formattedDate = post.created_at ? format(parseISO(post.created_at), 'MMMM d, yyyy') : 'Invalid Date';
+
   return (
     <div className="blog-post">
       <div className="blog-post-content">
-        <div className="blog-post-date">{post.date}</div>
+        <div className="blog-post-date">{formattedDate}</div>
         <h2>{post.title}</h2>
         <p>{post.content}</p>
         <div className="blog-post-tags">

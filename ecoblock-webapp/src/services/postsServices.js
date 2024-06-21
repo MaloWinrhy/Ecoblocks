@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000';
 
-export const getBlogPosts = async () => {
+export const getAllBlogPosts = async () => {
   try {
     const response = await axios.get(`${API_URL}/posts`);
     return response.data;
   } catch (error) {
-    error("There was an error fetching the blog posts!", error);
+    console.error("There was an error fetching the blog posts!", error);
     throw error;
   }
 };
