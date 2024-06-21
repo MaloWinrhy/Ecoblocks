@@ -108,15 +108,17 @@ const DevBlogPage = () => {
           <p>No blog posts available.</p>
         )}
       </div>
-      <div className="pagination">
-        <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1}>
-          Previous
-        </button>
-        {renderPageNumbers()}
-        <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
-          Next
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1}>
+            Previous
+          </button>
+          {renderPageNumbers()}
+          <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
+            Next
+          </button>
+        </div>
+      )}
       <Footer />
     </div>
   );
