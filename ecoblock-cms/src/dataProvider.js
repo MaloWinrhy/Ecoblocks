@@ -15,23 +15,30 @@ const dataProvider = {
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-    return httpClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get('content-range').split('/').pop(), 10),
-    }));
+    return httpClient(url).then(({ headers, json }) => {
+      console.log('getList response:', json);
+      return {
+        data: json,
+        total: json.length, // Assuming your API returns an array of items
+      };
+    });
   },
 
   getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-      data: json,
-    })),
+    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => {
+      console.log('getOne response:', json);
+      return { data: json };
+    }),
 
   getMany: (resource, params) => {
     const query = {
       filter: JSON.stringify({ id: params.ids }),
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
-    return httpClient(url).then(({ json }) => ({ data: json }));
+    return httpClient(url).then(({ json }) => {
+      console.log('getMany response:', json);
+      return { data: json };
+    });
   },
 
   getManyReference: (resource, params) => {
@@ -47,17 +54,23 @@ const dataProvider = {
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
-    return httpClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get('content-range').split('/').pop(), 10),
-    }));
+    return httpClient(url).then(({ headers, json }) => {
+      console.log('getManyReference response:', json);
+      return {
+        data: json,
+        total: json.length, // Assuming your API returns an array of items
+      };
+    });
   },
 
   update: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'PUT',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => {
+      console.log('update response:', json);
+      return { data: json };
+    }),
 
   updateMany: (resource, params) => {
     const query = {
@@ -66,21 +79,28 @@ const dataProvider = {
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: 'PUT',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => {
+      console.log('updateMany response:', json);
+      return { data: json };
+    });
   },
 
   create: (resource, params) =>
     httpClient(`${apiUrl}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
-    })),
+    }).then(({ json }) => {
+      console.log('create response:', json);
+      return { data: { ...params.data, id: json.id } };
+    }),
 
   delete: (resource, params) =>
     httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'DELETE',
-    }).then(({ json }) => ({ data: json })),
+    }).then(({ json }) => {
+      console.log('delete response:', json);
+      return { data: json };
+    }),
 
   deleteMany: (resource, params) => {
     const query = {
@@ -89,7 +109,10 @@ const dataProvider = {
     return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
       method: 'DELETE',
       body: JSON.stringify(params.data),
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => {
+      console.log('deleteMany response:', json);
+      return { data: json };
+    });
   },
 };
 

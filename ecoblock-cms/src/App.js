@@ -1,17 +1,38 @@
-import * as React from "react";
-import { Admin, Resource } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
-import PostList from './src/posts/PostList';
-import PostEdit from './src/posts/PostEdit';
-import PostCreate from './src/posts/PostCreate';
+import React, { useEffect, useState } from 'react';
+import { Admin, Resource } from 'react-admin';
+import dataProvider from './dataProvider';
+import PostList from './posts/PostList';
+import PostEdit from './posts/PostEdit';
+import PostCreate from './posts/PostCreate';
+import checkApiConnectivity from './checkApiConnectivity';
 
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+const App = () => {
+  const [apiConnected, setApiConnected] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-const App = () => (
-  <Admin dataProvider={dataProvider}>
-    <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-    <Resource name="users" list={PostList} edit={PostEdit} />
-  </Admin>
-);
+  useEffect(() => {
+    const verifyApiConnectivity = async () => {
+      const isConnected = await checkApiConnectivity();
+      setApiConnected(isConnected);
+      setLoading(false);
+    };
+
+    verifyApiConnectivity();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!apiConnected) {
+    return <div>Unable to connect to API. Please check your connection and try again.</div>;
+  }
+
+  return (
+    <Admin dataProvider={dataProvider}>
+      <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
+    </Admin>
+  );
+};
 
 export default App;
