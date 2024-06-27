@@ -9,7 +9,9 @@ use std::env;
 use log::error;
 use crate::routes::users::auth::Claims;
 
-pub struct Auth;
+pub struct Auth {
+    pub required_role: Option<String>,
+}
 
 impl<S> Transform<S, ServiceRequest> for Auth
 where
@@ -23,12 +25,16 @@ where
     type Future = Ready<Result<Self::Transform, Self::InitError>>;
 
     fn new_transform(&self, service: S) -> Self::Future {
-        ok(AuthMiddleware { service })
+        ok(AuthMiddleware {
+            service,
+            required_role: self.required_role.clone(),
+        })
     }
 }
 
 pub struct AuthMiddleware<S> {
     service: S,
+    required_role: Option<String>,
 }
 
 impl<S> Service<ServiceRequest> for AuthMiddleware<S>
@@ -59,7 +65,17 @@ where
                     let token_data = decode::<Claims>(&token, &DecodingKey::from_secret(secret.as_ref()), &Validation::default());
 
                     if let Ok(token_data) = token_data {
-                        req.extensions_mut().insert(token_data.claims);
+                        let mut claims = token_data.claims;
+                        if let Some(ref required_role) = self.required_role {
+                            if claims.role != *required_role {
+                                error!("User does not have the required role: {}", required_role);
+                                let (req, _pl) = req.into_parts();
+                                let res = HttpResponse::Forbidden().finish().map_into_boxed_body();
+                                let srv_res = ServiceResponse::new(req, res);
+                                return ok(srv_res).boxed_local();
+                            }
+                        }
+                        req.extensions_mut().insert(claims);
                         return self.service.call(req).boxed_local();
                     } else {
                         error!("Token decoding failed: {:?}", token_data.err());

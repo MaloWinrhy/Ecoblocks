@@ -22,10 +22,10 @@ pub struct LoginResponse {
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
-    sub: i64,
-    email: String,
-    role: String,
-    exp: usize,
+    pub sub: i64,
+    pub email: String,
+    pub role: String,
+    pub exp: usize,
 }
 
 pub async fn login_handler(pool: web::Data<DbPool>, item: web::Json<LoginRequest>) -> impl Responder {

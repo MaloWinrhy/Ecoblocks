@@ -14,23 +14,22 @@ pub fn init_user_routes(cfg: &mut web::ServiceConfig) {
     )
     .service(
         web::resource("/user/{id}")
-            .wrap(Auth)
-            .route(web::get().to(get_user_by_id_handler))
+        .route(web::get().to(get_user_by_id_handler))
             .route(web::delete().to(delete_user_handler))
     )
     .service(
         web::resource("/users")
-            .wrap(Auth)
+            .wrap(Auth { required_role: Some("ADMIN".to_string())})
             .route(web::get().to(get_all_users_handler))
     )
     .service(
         web::resource("/user/{id}/email")
-            .wrap(Auth)
-            .route(web::put().to(update_user_email_handler))
+        .wrap(Auth { required_role: Some("ADMIN".to_string())})
+        .route(web::put().to(update_user_email_handler))
     )
     .service(
         web::resource("/user/{id}/role")
-            .wrap(Auth)
-            .route(web::put().to(update_user_role_handler))
+        .wrap(Auth { required_role: Some("ADMIN".to_string())})
+        .route(web::put().to(update_user_role_handler))
     );
 }
