@@ -24,3 +24,14 @@ pub struct NewProduct {
     pub image: Option<String>,
     pub tags: Vec<String>,
 }
+
+
+#[derive(AsChangeset, Deserialize)]
+#[table_name = "products"]
+pub struct UpdateProduct {
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub image: Option<String>,
+    pub tags: Option<Vec<String>>,
+    pub updated_at: Option<chrono::NaiveDateTime>,
+}

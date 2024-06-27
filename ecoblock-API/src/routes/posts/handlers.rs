@@ -2,8 +2,8 @@ use actix_web::{web, HttpResponse, Responder};
 use serde::Serialize;
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::pg::PgConnection;
-use crate::routes::posts::actions::{create_post, get_post_by_id, get_all_posts, delete_post};
-use crate::routes::posts::models::NewPost;
+use crate::routes::posts::actions::{create_post, get_post_by_id, get_all_posts, delete_post, update_post};
+use crate::routes::posts::models::{NewPost, UpdatePost};
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
@@ -70,7 +70,6 @@ pub async fn get_all_posts_handler(
     }
 }
 
-
 pub async fn delete_post_handler(
     pool: web::Data<DbPool>,
     post_id: web::Path<i64>,
@@ -86,6 +85,26 @@ pub async fn delete_post_handler(
         Err(_) => HttpResponse::InternalServerError().json(ApiError {
             status: "error".to_string(),
             message: "Failed to delete post".to_string(),
+        }),
+    }
+}
+
+pub async fn update_post_handler(
+    pool: web::Data<DbPool>,
+    post_id: web::Path<i64>,
+    item: web::Json<UpdatePost>,
+) -> impl Responder {
+    let mut conn = pool.get().expect("Failed to get DB connection");
+    let post_id = post_id.into_inner();
+
+    match update_post(&mut conn, post_id, item.into_inner()) {
+        Ok(post) => HttpResponse::Ok().json(ApiResponse {
+            status: "success".to_string(),
+            data: post,
+        }),
+        Err(_) => HttpResponse::InternalServerError().json(ApiError {
+            status: "error".to_string(),
+            message: "Failed to update post".to_string(),
         }),
     }
 }

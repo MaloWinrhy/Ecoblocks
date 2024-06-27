@@ -1,5 +1,5 @@
 use diesel::prelude::*;
-use crate::routes::products::models::{Product, NewProduct};
+use crate::routes::products::models::{Product, NewProduct, UpdateProduct};
 use crate::schema::products::dsl::*;
 use diesel::pg::PgConnection;
 use crate::utils::snowflake_generator::generate_id;
@@ -21,4 +21,10 @@ pub fn get_all_products(conn: &mut PgConnection) -> QueryResult<Vec<Product>> {
 
 pub fn delete_product(conn: &mut PgConnection, product_id: i64) -> QueryResult<usize> {
     diesel::delete(products.find(product_id)).execute(conn)
+}
+
+pub fn update_product(conn: &mut PgConnection, product_id: i64, updated_product: UpdateProduct) -> QueryResult<Product> {
+    diesel::update(products.find(product_id))
+        .set(&updated_product)
+        .get_result(conn)
 }

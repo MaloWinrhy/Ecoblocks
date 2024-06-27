@@ -1,5 +1,6 @@
+use chrono::Utc;
 use diesel::prelude::*;
-use crate::routes::posts::models::{Post, NewPost};
+use crate::routes::posts::models::{Post, NewPost, UpdatePost};
 use crate::schema::posts::dsl::*;
 use diesel::pg::PgConnection;
 use crate::utils::snowflake_generator::generate_id;
@@ -21,4 +22,10 @@ pub fn get_all_posts(conn: &mut PgConnection) -> QueryResult<Vec<Post>> {
 
 pub fn delete_post(conn: &mut PgConnection, post_id: i64) -> QueryResult<usize> {
     diesel::delete(posts.find(post_id)).execute(conn)
+}
+pub fn update_post(conn: &mut PgConnection, post_id: i64, mut updated_post: UpdatePost) -> QueryResult<Post> {
+    updated_post.updated_at = Some(Utc::now().naive_utc());
+    diesel::update(posts.find(post_id))
+        .set(&updated_post)
+        .get_result(conn)
 }

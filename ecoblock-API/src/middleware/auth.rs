@@ -65,7 +65,7 @@ where
                     let token_data = decode::<Claims>(&token, &DecodingKey::from_secret(secret.as_ref()), &Validation::default());
 
                     if let Ok(token_data) = token_data {
-                        let mut claims = token_data.claims;
+                        let claims = token_data.claims;
                         if let Some(ref required_role) = self.required_role {
                             if claims.role != *required_role {
                                 error!("User does not have the required role: {}", required_role);
