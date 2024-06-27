@@ -1,0 +1,1 @@
+(schema::users::columns::id, schema::users::columns::username, schema::users::columns::email, schema::users::columns::email, schema::users::columns::password_hash, schema::users::columns::created_at, schema::users::columns::updated_at)

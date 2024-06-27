@@ -2,17 +2,24 @@ use actix_web::{HttpResponse, web};
 use serde::{Serialize, Deserialize};
 use diesel::pg::PgConnection;
 use diesel::r2d2::{self, ConnectionManager};
-use crate::routes::users::actions::{create_user, get_user_by_id, get_all_users, update_user_email, delete_user};
+use crate::routes::users::actions::{create_user, get_user_by_id, get_all_users,update_user_role, update_user_email, delete_user};
 use bcrypt::{hash, DEFAULT_COST};
 use log::error;
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
+
+#[derive(Serialize)]
+pub struct ApiError {
+    status: String,
+    message: String,
+}
 
 #[derive(Deserialize)]
 pub struct CreateUserRequest {
     username: String,
     email: String,
     password: String,
+    role: String,
 }
 
 #[derive(Serialize)]
@@ -20,12 +27,6 @@ pub struct UserResponse {
     id: i64,
     username: String,
     email: String,
-}
-
-#[derive(Serialize)]
-pub struct ApiError {
-    status: String,
-    message: String,
 }
 
 pub async fn create_user_handler(
@@ -45,7 +46,7 @@ pub async fn create_user_handler(
         }
     };
 
-    match create_user(&mut conn, &item.username, &item.email, &password_hash) {
+    match create_user(&mut conn, &item.username, &item.email, &password_hash, &item.role) {
         Ok(user) => HttpResponse::Ok().json(UserResponse {
             id: user.id,
             username: user.username,
@@ -56,6 +57,33 @@ pub async fn create_user_handler(
             HttpResponse::InternalServerError().json(ApiError {
                 status: "error".to_string(),
                 message: "Failed to create user".to_string(),
+            })
+        },
+    }
+}
+#[derive(Deserialize)]
+pub struct UpdateUserRoleRequest {
+    new_role: String,
+}
+
+pub async fn update_user_role_handler(
+    pool: web::Data<DbPool>,
+    user_id: web::Path<i64>,
+    item: web::Json<UpdateUserRoleRequest>,
+) -> HttpResponse {
+    let mut conn = pool.get().expect("Failed to get DB connection");
+
+    match update_user_role(&mut conn, *user_id, &item.new_role) {
+        Ok(user) => HttpResponse::Ok().json(UserResponse {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+        }),
+        Err(e) => {
+            error!("Failed to update user role: {}", e);
+            HttpResponse::InternalServerError().json(ApiError {
+                status: "error".to_string(),
+                message: "Failed to update user role".to_string(),
             })
         },
     }
@@ -72,6 +100,7 @@ pub async fn get_user_by_id_handler(
             id: user.id,
             username: user.username,
             email: user.email,
+
         }),
         Err(e) => {
             error!("Failed to get user by ID: {}", e);
@@ -93,6 +122,7 @@ pub async fn get_all_users_handler(
             id: user.id,
             username: user.username,
             email: user.email,
+
         }).collect::<Vec<UserResponse>>()),
         Err(e) => {
             error!("Failed to fetch users: {}", e);
@@ -121,6 +151,7 @@ pub async fn update_user_email_handler(
             id: user.id,
             username: user.username,
             email: user.email,
+
         }),
         Err(e) => {
             error!("Failed to update user email: {}", e);

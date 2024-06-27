@@ -27,5 +27,10 @@ pub fn init_user_routes(cfg: &mut web::ServiceConfig) {
         web::resource("/user/{id}/email")
             .wrap(Auth)
             .route(web::put().to(update_user_email_handler))
+    )
+    .service(
+        web::resource("/user/{id}/role")
+            .wrap(Auth)
+            .route(web::put().to(update_user_role_handler))
     );
 }

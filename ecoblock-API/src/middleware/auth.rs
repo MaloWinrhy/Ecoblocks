@@ -6,6 +6,7 @@ use futures::FutureExt;
 use jsonwebtoken::{decode, Validation, DecodingKey};
 use std::task::{Context, Poll};
 use std::env;
+use log::error;
 use crate::routes::users::auth::Claims;
 
 pub struct Auth;
@@ -44,6 +45,10 @@ where
     }
 
     fn call(&self, req: ServiceRequest) -> Self::Future {
+        if req.path().starts_with("/login") || req.path().starts_with("/create_user") {
+            return self.service.call(req).boxed_local();
+        }
+
         let auth_header = req.headers().get("Authorization");
 
         if let Some(auth_header) = auth_header {
@@ -56,9 +61,17 @@ where
                     if let Ok(token_data) = token_data {
                         req.extensions_mut().insert(token_data.claims);
                         return self.service.call(req).boxed_local();
+                    } else {
+                        error!("Token decoding failed: {:?}", token_data.err());
                     }
+                } else {
+                    error!("Authorization header does not start with Bearer");
                 }
+            } else {
+                error!("Invalid Authorization header");
             }
+        } else {
+            error!("No Authorization header found");
         }
 
         let (req, _pl) = req.into_parts();
