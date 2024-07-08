@@ -10,3 +10,6 @@ export const sanitizeInput = (input) => {
     return re.test(String(email).toLowerCase());
   };
 
+  export const validatePasswordMatch = (password, confirmPassword) => {
+    return password === confirmPassword;
+  };
