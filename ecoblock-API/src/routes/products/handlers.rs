@@ -62,7 +62,7 @@ pub async fn get_all_products_handler(
     let mut conn = pool.get().expect("Failed to get DB connection");
 
     match get_all_products(&mut conn) {
-        Ok(products) => HttpResponse::Ok().json(products), // Retourner directement les products
+        Ok(products) => HttpResponse::Ok().json(products),
         Err(_) => HttpResponse::InternalServerError().json(ApiError {
             status: "error".to_string(),
             message: "Failed to fetch products".to_string(),

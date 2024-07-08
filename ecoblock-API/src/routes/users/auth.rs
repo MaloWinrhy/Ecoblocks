@@ -31,7 +31,6 @@ pub struct Claims {
 pub async fn login_handler(pool: web::Data<DbPool>, item: web::Json<LoginRequest>) -> impl Responder {
     let mut conn = pool.get().expect("Failed to get DB connection");
 
-    // Ajouter des logs
     info!("Attempting to find user with email: {}", item.email);
 
     let user = match users.filter(user_email.eq(&item.email)).first::<User>(&mut conn).optional() {
@@ -49,7 +48,6 @@ pub async fn login_handler(pool: web::Data<DbPool>, item: web::Json<LoginRequest
         },
     };
 
-    // Vérifier le mot de passe
     if verify(&item.password, &user.password_hash).unwrap_or(false) {
         info!("Password verification successful for user: {}", user.email);
         let exp = chrono::Utc::now()
@@ -58,7 +56,6 @@ pub async fn login_handler(pool: web::Data<DbPool>, item: web::Json<LoginRequest
             .timestamp();
         let claims = Claims { sub: user.id, email: user.email.clone(), role: user.role.clone(), exp: exp as usize };
 
-        // Charger la clé secrète
         let secret = match env::var("SECRET_KEY") {
             Ok(secret) => secret,
             Err(e) => {
@@ -67,7 +64,6 @@ pub async fn login_handler(pool: web::Data<DbPool>, item: web::Json<LoginRequest
             },
         };
 
-        // Générer le token JWT
         let token = match encode(&Header::default(), &claims, &EncodingKey::from_secret(secret.as_ref())) {
             Ok(token) => token,
             Err(e) => {
