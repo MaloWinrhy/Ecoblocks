@@ -1,8 +1,15 @@
 import { fetchUtils } from 'react-admin';
 import { stringify } from 'query-string';
+import JSONbig from 'json-bigint';
 
 const apiUrl = 'http://localhost:8000';
-const httpClient = fetchUtils.fetchJson;
+const httpClient = (url, options = {}) => {
+  return fetchUtils.fetchJson(url, options).then(response => {
+    // Use json-bigint to parse the response
+    response.json = JSONbig.parse(response.body);
+    return response;
+  });
+};
 
 const dataProvider = {
   getList: (resource, params) => {
