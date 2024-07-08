@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import { login, setToken } from '../../services/authServices';
+import { sanitizeInput, validateEmail, validatePassword } from '../../utils/validationUtils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,8 +11,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedPassword = sanitizeInput(password);
+
+    if (!validateEmail(sanitizedEmail)) {
+      setError('Invalid email format');
+      return;
+    }
+
+    if (!validatePassword(sanitizedPassword)) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
     try {
-      const response = await login(email, password);
+      const response = await login(sanitizedEmail, sanitizedPassword);
       setToken(response.token);
       window.location.href = '/';
     } catch (error) {
