@@ -5,3 +5,8 @@ export const sanitizeInput = (input) => {
     return element.innerHTML;
   };
 
+ export const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
