@@ -13,3 +13,8 @@ export const sanitizeInput = (input) => {
   export const validatePasswordMatch = (password, confirmPassword) => {
     return password === confirmPassword;
   };
+
+   export const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
