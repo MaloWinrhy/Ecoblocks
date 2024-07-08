@@ -61,7 +61,7 @@ impl Tangle {
         if self.validate_block(&new_block) {
             self.blocks.insert(new_block.hash.clone(), new_block.clone());
             self.save_block(&new_block).await;
-            self.reward_user(&new_block).await; // Récompenser l'utilisateur
+            self.reward_user(&new_block).await; 
             Ok(())
         } else {
             Err(String::from("Block validation failed"))

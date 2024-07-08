@@ -8,7 +8,6 @@ pub async fn init_db() -> Result<Database, Error> {
     client_options.app_name = Some("BlockchainApp".to_string());
     let client = Client::with_options(client_options)?;
 
-    // Vérifier la connexion en listant les collections
     match client.database("ecoblockchain").list_collection_names(None).await {
         Ok(collections) => {
             println!("Connected to MongoDB. Collections: {:?}", collections);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Admin, Resource } from 'react-admin';
 import dataProvider from './dataProvider';
-import PostList from './posts/PostList';
-import PostEdit from './posts/PostEdit';
-import PostCreate from './posts/PostCreate';
+import PostList from './posts/postList';
+import PostEdit from './posts/postEdit';
+import PostCreate from './posts/postList';
 import checkApiConnectivity from './checkApiConnectivity';
 
 const App = () => {
