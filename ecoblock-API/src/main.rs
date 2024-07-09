@@ -33,6 +33,7 @@ async fn main() -> std::io::Result<()> {
                     .allow_any_origin()
                     .allow_any_method()
                     .allow_any_header()
+                    .expose_headers(vec!["X-Total-Count"])
                     .max_age(3600)
             )
             .app_data(web::Data::new(pool.clone()))

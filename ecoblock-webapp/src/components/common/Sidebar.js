@@ -1,38 +1,35 @@
 import React from 'react';
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 
 const Sidebar = () => {
   return (
     <aside className="sidebar">
       <nav>
-        {/* Getting Started section */}
         <h2>Getting Started</h2>
         <ul>
-          <li><Link to="#introduction">Introduction</Link></li>
-          <li><Link to="#vision-and-mission">Vision and Mission</Link></li>
+          <li><ScrollLink to="introduction" smooth={true} duration={500}>Introduction</ScrollLink></li>
+          <li><ScrollLink to="vision-and-mission" smooth={true} duration={500}>Vision and Mission</ScrollLink></li>
         </ul>
-        {/* For Users section */}
         <h2>For Users</h2>
         <ul>
-          <li><Link to="#ecoblocks-iot">EcoBlocks IoT</Link></li>
-          <li><Link to="#ecoblocks-app">EcoBlocks App</Link></li>
-          <li><Link to="#ecoblocks-client">EcoBlocks Client</Link></li>
-          <li><Link to="#ecoblocks-zksync">EcoBlocks on zkSync Era</Link></li>
-          <li><Link to="#ecoblocks-portal">EcoBlocks Portal</Link></li>
-          <li><Link to="#ecob-token">ECOB Token</Link></li>
-          <li><Link to="#nft-tool">NFT Minting Tool</Link></li>
-          <li><Link to="#explorer">EcoBlocks Explorer</Link></li>
-          <li><Link to="#participate">Participate</Link></li>
+          <li><ScrollLink to="ecoblocks-iot" smooth={true} duration={500}>EcoBlocks IoT</ScrollLink></li>
+          <li><ScrollLink to="ecoblocks-app" smooth={true} duration={500}>EcoBlocks App</ScrollLink></li>
+          <li><ScrollLink to="ecoblocks-client" smooth={true} duration={500}>EcoBlocks Client</ScrollLink></li>
+          <li><ScrollLink to="ecoblocks-zksync" smooth={true} duration={500}>EcoBlocks on zkSync Era</ScrollLink></li>
+          <li><ScrollLink to="ecoblocks-portal" smooth={true} duration={500}>EcoBlocks Portal</ScrollLink></li>
+          <li><ScrollLink to="ecob-token" smooth={true} duration={500}>ECOB Token</ScrollLink></li>
+          <li><ScrollLink to="nft-tool" smooth={true} duration={500}>NFT Minting Tool</ScrollLink></li>
+          <li><ScrollLink to="explorer" smooth={true} duration={500}>EcoBlocks Explorer</ScrollLink></li>
+          <li><ScrollLink to="participate" smooth={true} duration={500}>Participate</ScrollLink></li>
         </ul>
-        {/* For Developers section */}
         <h2>For Developers</h2>
         <ul>
-          <li><Link to="#indexer">SubQuery Indexer</Link></li>
-          <li><Link to="#apis">EcoBlocks APIs</Link></li>
-          <li><Link to="#parachain">EcoBlocks Parachain</Link></li>
-          <li><Link to="#modules">Parachain Modules</Link></li>
-          <li><Link to="#sdk">EcoBlocks SDK</Link></li>
+          <li><ScrollLink to="indexer" smooth={true} duration={500}>SubQuery Indexer</ScrollLink></li>
+          <li><ScrollLink to="apis" smooth={true} duration={500}>EcoBlocks APIs</ScrollLink></li>
+          <li><ScrollLink to="parachain" smooth={true} duration={500}>EcoBlocks Parachain</ScrollLink></li>
+          <li><ScrollLink to="modules" smooth={true} duration={500}>Parachain Modules</ScrollLink></li>
+          <li><ScrollLink to="sdk" smooth={true} duration={500}>EcoBlocks SDK</ScrollLink></li>
         </ul>
       </nav>
     </aside>

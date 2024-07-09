@@ -1,38 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Admin, Resource } from 'react-admin';
-import dataProvider from './dataProvider';
-import PostList from './posts/postList';
-import PostEdit from './posts/postEdit';
-import PostCreate from './posts/postList';
-import checkApiConnectivity from './checkApiConnectivity';
+import * as React from "react";
+import { Admin, Resource } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
+import authProvider from './authProvider';
+import { UserList, UserCreate, UserEdit } from './components/users';
+import { ProductList, ProductCreate, ProductEdit } from './components/products';
+import { PostList, PostCreate, PostEdit } from './components/posts';
+import LoginPage from './LoginPage';
 
-const App = () => {
-  const [apiConnected, setApiConnected] = useState(false);
-  const [loading, setLoading] = useState(true);
+const dataProvider = jsonServerProvider('http://localhost:8000');
 
-  useEffect(() => {
-    const verifyApiConnectivity = async () => {
-      const isConnected = await checkApiConnectivity();
-      setApiConnected(isConnected);
-      setLoading(false);
-    };
-
-    verifyApiConnectivity();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!apiConnected) {
-    return <div>Unable to connect to API. Please check your connection and try again.</div>;
-  }
-
-  return (
-    <Admin dataProvider={dataProvider}>
-      <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        loginPage={LoginPage}
+    >
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} />
     </Admin>
-  );
-};
+);
 
 export default App;
