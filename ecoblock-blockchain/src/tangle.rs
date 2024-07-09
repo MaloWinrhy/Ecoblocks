@@ -4,12 +4,12 @@ use std::collections::HashMap;
 use crate::wallet::Wallet;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-use futures::stream::StreamExt; // Utilisez futures_util::stream::StreamExt
+use futures::stream::StreamExt;
 
 pub struct Tangle {
     pub blocks: HashMap<String, Block>,
     pub db: Database,
-    pub wallet: Arc<Mutex<Wallet>>, // Ajout d'un portefeuille pour les récompenses
+    pub wallet: Arc<Mutex<Wallet>>,
 }
 
 impl Tangle {
@@ -69,12 +69,10 @@ impl Tangle {
     }
 
     fn select_previous_blocks(&self) -> Vec<String> {
-        // Sélectionner deux blocs précédents de manière aléatoire ou selon une politique spécifique
         self.blocks.keys().take(2).cloned().collect()
     }
 
     fn validate_block(&self, block: &Block) -> bool {
-        // Valider que les blocs précédents existent dans le Tangle
         for hash in &block.previous_hashes {
             if !self.blocks.contains_key(hash) {
                 return false;
@@ -111,8 +109,6 @@ impl Tangle {
     }
 
     fn calculate_block_value(&self, block: &Block) -> u64 {
-        // Calculer la valeur du bloc en fonction des données environnementales
-        // Par exemple, une valeur fixe pour chaque type de donnée mesurée
         let mut value = 0;
         if block.data.environment.temperature != 0.0 { value += 10; }
         if block.data.environment.humidity != 0 { value += 10; }
