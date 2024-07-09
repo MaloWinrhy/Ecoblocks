@@ -4,7 +4,7 @@ use sha2::{Sha256, Digest};
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Block {
     pub index: u64,
-    pub timestamp: u128,
+    pub timestamp: f64,
     pub previous_hashes: Vec<String>,
     pub hash: String,
     pub data: Data,
@@ -15,7 +15,7 @@ pub struct Block {
 pub struct Data {
     pub environment: Environment,
     pub location: Location,
-    pub timestamp: u128,
+    pub timestamp: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -44,7 +44,7 @@ pub struct Location {
 }
 
 impl Block {
-    pub fn new(index: u64, timestamp: u128, previous_hashes: Vec<String>, data: Data, proposer_id: String) -> Self {
+    pub fn new(index: u64, timestamp: f64, previous_hashes: Vec<String>, data: Data, proposer_id: String) -> Self {
         let mut block = Block {
             index,
             timestamp,

@@ -61,7 +61,7 @@ impl Tangle {
         if self.validate_block(&new_block) {
             self.blocks.insert(new_block.hash.clone(), new_block.clone());
             self.save_block(&new_block).await;
-            self.reward_user(&new_block).await; 
+            self.reward_user(&new_block).await;
             Ok(())
         } else {
             Err(String::from("Block validation failed"))
@@ -133,8 +133,8 @@ impl Tangle {
     }
 }
 
-fn current_time() -> u128 {
+fn current_time() -> f64 {
     let start = std::time::SystemTime::now();
     let since_epoch = start.duration_since(std::time::UNIX_EPOCH).expect("Time went backwards");
-    since_epoch.as_millis()
+    since_epoch.as_secs_f64()
 }
