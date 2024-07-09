@@ -1,13 +1,11 @@
 import * as React from "react";
 import { Admin, Resource } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
 import authProvider from './authProvider';
+import dataProvider from './dataProvider'; // Assurez-vous que c'est le dataProvider personnalisé
 import { UserList, UserCreate, UserEdit } from './components/users';
 import { ProductList, ProductCreate, ProductEdit } from './components/products';
 import { PostList, PostCreate, PostEdit } from './components/posts';
 import LoginPage from './LoginPage';
-
-const dataProvider = jsonServerProvider('http://localhost:8000');
 
 const App = () => (
     <Admin
@@ -16,6 +14,8 @@ const App = () => (
         loginPage={LoginPage}
     >
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} />
+        <Resource name="products" list={ProductList} create={ProductCreate} edit={ProductEdit} />
+        <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} />
     </Admin>
 );
 

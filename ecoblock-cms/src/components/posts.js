@@ -1,10 +1,11 @@
 import * as React from "react";
+import BigIntField from './BingIntField';
 import { List, Datagrid, TextField, EditButton, DeleteButton, Create, SimpleForm, TextInput, Edit, ArrayInput, SimpleFormIterator } from "react-admin";
 
 export const PostList = props => (
-    <List {...props}>
+    <List {...props} perPage={1000}>
         <Datagrid rowClick="edit">
-            <TextField source="id" />
+            <BigIntField source="id" />
             <TextField source="title" />
             <TextField source="content" />
             <TextField source="image" />
@@ -18,7 +19,7 @@ export const PostList = props => (
 export const PostCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="id" />
+            <BigIntField source="id" />
             <TextInput source="title" />
             <TextInput source="content" />
             <TextInput source="image" />
@@ -34,7 +35,7 @@ export const PostCreate = props => (
 export const PostEdit = props => (
     <Edit {...props}>
         <SimpleForm>
-            <TextInput source="id" disabled />
+            <BigIntField source="id" disabled />
             <TextInput source="title" />
             <TextInput source="content" />
             <TextInput source="image" />

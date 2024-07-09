@@ -1,4 +1,4 @@
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{web, HttpRequest, HttpResponse, Responder};
 use serde::Serialize;
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::pg::PgConnection;
@@ -62,14 +62,20 @@ pub async fn get_all_posts_handler(
     let mut conn = pool.get().expect("Failed to get DB connection");
 
     match get_all_posts(&mut conn) {
-        Ok(posts) => HttpResponse::Ok().json(posts), // Retourner directement les posts
+        Ok(posts) => {
+            let total_count = posts.len().to_string();
+
+            HttpResponse::Ok()
+                .append_header(("X-Total-Count", total_count))
+                .append_header(("Access-Control-Expose-Headers", "X-Total-Count"))
+                .json(posts)
+        },
         Err(_) => HttpResponse::InternalServerError().json(ApiError {
             status: "error".to_string(),
             message: "Failed to fetch posts".to_string(),
         }),
     }
 }
-
 pub async fn delete_post_handler(
     pool: web::Data<DbPool>,
     post_id: web::Path<i64>,

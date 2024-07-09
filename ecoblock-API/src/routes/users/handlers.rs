@@ -118,12 +118,18 @@ pub async fn get_all_users_handler(
     let mut conn = pool.get().expect("Failed to get DB connection");
 
     match get_all_users(&mut conn) {
-        Ok(users) => HttpResponse::Ok().json(users.into_iter().map(|user| UserResponse {
-            id: user.id,
-            username: user.username,
-            email: user.email,
+        Ok(users) => {
+            let total_count = users.len();
+            let user_responses: Vec<UserResponse> = users.into_iter().map(|user| UserResponse {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+            }).collect();
 
-        }).collect::<Vec<UserResponse>>()),
+            HttpResponse::Ok()
+                .insert_header(("X-Total-Count", total_count.to_string()))
+                .json(user_responses)
+        }
         Err(e) => {
             error!("Failed to fetch users: {}", e);
             HttpResponse::InternalServerError().json(ApiError {
