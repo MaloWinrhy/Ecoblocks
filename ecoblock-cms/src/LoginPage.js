@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLogin, useNotify } from 'react-admin';
-import './LoginPage.css';  // Importation du fichier CSS
+import './LoginPage.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

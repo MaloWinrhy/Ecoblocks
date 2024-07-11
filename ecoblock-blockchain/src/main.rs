@@ -17,7 +17,7 @@ use block::{Data, Environment, Location};
 struct NewBlockRequest {
     data: Data,
     proposer_id: String,
-    address: String, // Ajout de l'adresse du portefeuille
+    address: String,
 }
 
 #[derive(Serialize)]
@@ -37,7 +37,6 @@ async fn main() {
     let wallet = Arc::new(Mutex::new(Wallet::new(db.clone())));
     let tangle = Arc::new(Mutex::new(Tangle::new(db, Arc::clone(&wallet)).await));
 
-    // Charger les portefeuilles depuis la base de données
     {
         let mut wallet = wallet.lock().await;
         wallet.load_wallets().await;
