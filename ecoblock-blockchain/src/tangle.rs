@@ -1,7 +1,7 @@
 use crate::block::{Block, Data, Environment, Location};
+use crate::wallet::Wallet;
 use mongodb::{bson::{self, Bson}, Database};
 use std::collections::HashMap;
-use crate::wallet::Wallet;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use futures::stream::StreamExt;
@@ -49,7 +49,7 @@ impl Tangle {
         self.save_block(&genesis_block).await;
     }
 
-    pub async fn add_block(&mut self, data: Data, proposer_id: String) -> Result<(), String> {
+    pub async fn add_block(&mut self, data: Data, proposer_id: String) -> Result<Block, String> {
         let previous_hashes = self.select_previous_blocks();
         let new_block = Block::new(
             self.blocks.len() as u64,
@@ -63,7 +63,7 @@ impl Tangle {
             self.blocks.insert(new_block.hash.clone(), new_block.clone());
             self.save_block(&new_block).await;
             self.reward_user(&new_block).await;
-            Ok(())
+            Ok(new_block)
         } else {
             Err(String::from("Block validation failed"))
         }
@@ -110,11 +110,11 @@ impl Tangle {
     async fn reward_user(&self, block: &Block) {
         let reward = self.calculate_block_value(block);
         let mut wallet = self.wallet.lock().await;
-        wallet.credit(&block.proposer_id, reward);
-        println!("Rewarded proposer {} with {} units", block.proposer_id, reward);
+        wallet.credit(&block.proposer_id, reward).await;
+        println!("Rewarded proposer {} with {} EcoBlockCoins", block.proposer_id, reward);
     }
 
-    fn calculate_block_value(&self, block: &Block) -> u64 {
+    pub fn calculate_block_value(&self, block: &Block) -> u64 {
         let mut value = 0;
         if block.data.environment.temperature != 0.0 { value += 10; }
         if block.data.environment.humidity != 0 { value += 10; }

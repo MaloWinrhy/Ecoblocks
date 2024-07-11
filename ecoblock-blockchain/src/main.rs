@@ -17,6 +17,7 @@ use block::{Data, Environment, Location};
 struct NewBlockRequest {
     data: Data,
     proposer_id: String,
+    address: String, // Ajout de l'adresse du portefeuille
 }
 
 #[derive(Serialize)]
@@ -68,7 +69,12 @@ async fn main() {
                     info!("Received new block request: {:?}", new_block);
                     let mut tangle = tangle.lock().await;
                     match tangle.add_block(new_block.data, new_block.proposer_id).await {
-                        Ok(_) => Ok::<_, warp::Rejection>(warp::reply::json(&tangle.blocks)),
+                        Ok(block) => {
+                            let reward = tangle.calculate_block_value(&block);
+                            let mut wallet = tangle.wallet.lock().await;
+                            wallet.credit(&new_block.address, reward).await;
+                            Ok::<_, warp::Rejection>(warp::reply::json(&tangle.blocks))
+                        },
                         Err(err) => Err(warp::reject::custom(CustomError(err))),
                     }
                 }
