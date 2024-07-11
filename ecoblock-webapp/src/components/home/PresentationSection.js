@@ -5,7 +5,7 @@ const PresentationSection = () => {
   const [clickedIndex, setClickedIndex] = useState(1);
 
   const handleSquareClick = (index) => {
-    setClickedIndex(index);
+    setClickedIndex(clickedIndex === index ? null : index);
   };
 
   return (
@@ -32,7 +32,7 @@ const PresentationSection = () => {
             onClick={() => handleSquareClick(index)}
           >
             <h3>{item.title}</h3>
-            {clickedIndex === index && <p>{item.description}</p>}
+            <p className={clickedIndex === index ? 'animate-text' : ''}>{item.description}</p>
           </div>
         ))}
       </div>

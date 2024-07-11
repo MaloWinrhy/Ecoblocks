@@ -5,12 +5,20 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: all 0.8s ease;
+  transition: background-color 0.3s ease, max-height 0.5s ease;
   padding: 20px;
+  cursor: pointer;
+  max-height: 310px;
+  min-height: 310px;
 }
 
 .blog-post:hover {
-  background-color: #cac7c761;
+  background-color: #f9f9f9;
+}
+
+.blog-post.expanded {
+  max-height: 1500px;
+  background-color: #ffffff;
 }
 
 .blog-post-content {
@@ -55,4 +63,9 @@
   height:  300px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.blog-post-content {
+  overflow: hidden;
+  transition: max-height 0.5s ease;
 }

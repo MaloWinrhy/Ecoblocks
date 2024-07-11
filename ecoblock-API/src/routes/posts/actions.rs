@@ -17,7 +17,7 @@ pub fn get_post_by_id(conn: &mut PgConnection, post_id: i64) -> QueryResult<Post
 }
 
 pub fn get_all_posts(conn: &mut PgConnection) -> QueryResult<Vec<Post>> {
-    posts.load(conn)
+    posts.order(created_at.desc()).load(conn)
 }
 
 pub fn delete_post(conn: &mut PgConnection, post_id: i64) -> QueryResult<usize> {

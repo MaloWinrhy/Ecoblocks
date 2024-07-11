@@ -16,7 +16,7 @@
     <div className='auth-page'>
         <Header />
         <div className="auth-container">
-            {isRegister ? <Register /> : <Login />}
+            {isRegister ? <Login /> : <Register />}
             <button className="toggle-button" onClick={toggleAuthMode}>
                 {isRegister ? 'Already have an account? Login' : 'Don\'t have an account? Register'}
             </button>
