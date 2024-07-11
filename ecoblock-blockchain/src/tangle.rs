@@ -15,6 +15,7 @@ pub struct Tangle {
 impl Tangle {
     pub async fn new(db: Database, wallet: Arc<Mutex<Wallet>>) -> Self {
         let mut tangle = Tangle { blocks: HashMap::new(), db, wallet };
+        tangle.load_blocks().await;
         tangle.create_genesis_block().await;
         tangle
     }
@@ -69,12 +70,17 @@ impl Tangle {
     }
 
     fn select_previous_blocks(&self) -> Vec<String> {
-        self.blocks.keys().take(2).cloned().collect()
+        let mut keys: Vec<String> = self.blocks.keys().cloned().collect();
+        keys.split_off(keys.len() - 2)
     }
 
     fn validate_block(&self, block: &Block) -> bool {
         for hash in &block.previous_hashes {
-            if !self.blocks.contains_key(hash) {
+            if let Some(previous_block) = self.blocks.get(hash) {
+                if !previous_block.validate_new_block(block) {
+                    return false;
+                }
+            } else {
                 return false;
             }
         }

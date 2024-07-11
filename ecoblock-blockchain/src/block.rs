@@ -63,4 +63,58 @@ impl Block {
         hasher.update(data);
         format!("{:x}", hasher.finalize())
     }
+
+    pub fn validate_new_block(&self, new_block: &Block) -> bool {
+        if new_block.timestamp <= self.timestamp {
+            return false;
+        }
+
+        if new_block.data.environment.temperature < -273.15 || new_block.data.environment.temperature > 100.0 {
+            return false;
+        }
+        if new_block.data.environment.humidity > 100 {
+            return false;
+        }
+        if new_block.data.environment.air_quality_index > 500 {
+            return false;
+        }
+        if new_block.data.environment.pm25 < 0.0 || new_block.data.environment.pm25 > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.pm10 < 0.0 || new_block.data.environment.pm10 > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.no2 < 0.0 || new_block.data.environment.no2 > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.co < 0.0 || new_block.data.environment.co > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.o3 < 0.0 || new_block.data.environment.o3 > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.so2 < 0.0 || new_block.data.environment.so2 > 500.0 {
+            return false;
+        }
+        if new_block.data.environment.noise_level < 0.0 || new_block.data.environment.noise_level > 200.0 {
+            return false;
+        }
+        if new_block.data.environment.uv_index > 11 {
+            return false;
+        }
+        if new_block.data.environment.radiation_gamma < 0.0 || new_block.data.environment.radiation_gamma > 1000.0 {
+            return false;
+        }
+        if new_block.data.environment.water_ph < 0.0 || new_block.data.environment.water_ph > 14.0 {
+            return false;
+        }
+        if new_block.data.environment.water_turbidity < 0.0 || new_block.data.environment.water_turbidity > 1000.0 {
+            return false;
+        }
+        if new_block.data.environment.dissolved_oxygen < 0.0 || new_block.data.environment.dissolved_oxygen > 20.0 {
+            return false;
+        }
+
+        true
+    }
 }
