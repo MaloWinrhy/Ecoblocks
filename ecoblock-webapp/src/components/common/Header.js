@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './Header.css';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { NavLink } from 'react-router-dom';
-import { getToken, clearToken } from '../../services/authServices';
+import { clearToken } from '../../services/authServices';
+import { isAuthenticated } from '../../utils/authUtils';
 
 const Header = () => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const token = getToken();
-    if (token) {
-      setIsConnected(true);
-    }
+    setIsConnected(isAuthenticated());
   }, []);
 
   const handleDisconnect = () => {
@@ -33,9 +31,9 @@ const Header = () => {
         <NavLink to="/learn" activeClassName="active">Learn</NavLink>
         <NavLink to="/devblog" activeClassName="active">DevBlog</NavLink>
         {isConnected && (
-          <NavLink to="/account" activeClassName="active">Profile</NavLink>
+          <NavLink to="/profile" activeClassName="active">Profile</NavLink>
         )}
-          {isConnected && (
+        {isConnected && (
           <NavLink to="/dashboard" activeClassName="active">Dashboard</NavLink>
         )}
       </nav>

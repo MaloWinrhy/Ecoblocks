@@ -1,7 +1,11 @@
 :root {
   --color-primary: #4F7648;
+  --color-primary-light: #6A9B6B;
+  --color-primary-dark: #3A5735;
   --color-primary-hover: #9E9E9E;
   --color-secondary: #283747;
+  --color-secondary-light: #3E5571;
+  --color-secondary-dark: #1B2734;
   --color-white: #ffffff;
   --color-gray-medium: #666666;
   --color-gray-light: #f9f9f9;
