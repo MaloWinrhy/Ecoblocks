@@ -22,20 +22,23 @@ const Header = () => {
 
   return (
     <header className="header">
-      {/* Logo */}
       <NavLink to="/" className="logo-link">
         <div className="logo-container">
           <Logo className="logo-svg" />
           <div className="logo-text">EcoBlocks</div>
         </div>
       </NavLink>
-      {/* Navigation */}
       <nav className="nav">
         <NavLink to="/product" activeClassName="active">Product</NavLink>
         <NavLink to="/learn" activeClassName="active">Learn</NavLink>
         <NavLink to="/devblog" activeClassName="active">DevBlog</NavLink>
+        {isConnected && (
+          <NavLink to="/account" activeClassName="active">Profile</NavLink>
+        )}
+          {isConnected && (
+          <NavLink to="/dashboard" activeClassName="active">Dashboard</NavLink>
+        )}
       </nav>
-      {/* Connect/Disconnect button */}
       <div className="connect-container">
         {isConnected ? (
           <button onClick={handleDisconnect} className="disconnect-button">Disconnect</button>
