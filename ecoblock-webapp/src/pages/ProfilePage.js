@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import './ProfilePage.css';
+import { getProfile } from '../services/profileServices';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
-    username: 'JohnDoe',
-    email: 'johndoe@example.com',
-    bio: 'Eco enthusiast and blockchain lover.',
-    ecoBlocks: 120,
-    rank: 5,
-    walletNumber: '1234-5678-9123-4567',
-    walletStats: {
-      balance: 250.75,
-      transactions: 48,
-      rewards: 30.5
-    }
+    username: '',
+    email: '',
+    bio: '',
+    ecoBlocks: 0,
+    rank: 0,
+    walletNumber: '',
   });
 
   useEffect(() => {
-    // Fetch user profile data from API and set it to state
-    // For now, using static data for demonstration
+    const fetchProfile = async () => {
+      try {
+        const data = await getProfile();
+        setProfile({
+          username: data.username,
+          email: data.email,
+        });
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
+
+    fetchProfile();
   }, []);
 
   return (
@@ -54,9 +61,7 @@ const ProfilePage = () => {
             <div className="profile-item">
               <h2>Wallet Stats</h2>
               <div className="blur-text">
-                <p>Balance: {profile.walletStats.balance} EcoBlocks</p>
-                <p>Transactions: {profile.walletStats.transactions}</p>
-                <p>Rewards: {profile.walletStats.rewards} EcoBlocks</p>
+
               </div>
             </div>
           </div>
