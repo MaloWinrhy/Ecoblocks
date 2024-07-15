@@ -1,0 +1,45 @@
+.block-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .block-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1 0 21%;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .block-item.selected, .block-item:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .block-item h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+  }
+
+  .block-item .block-address {
+    font-size: 0.8rem;
+    color: gray;
+    transition: color 0.3s;
+  }
+
+  .block-item .block-count {
+    font-size: 0.8rem;
+    color: var(--color-primary);
+    transition: color 0.3s;
+  }
+
+  .block-item.selected h3, .block-item:hover h3,
+  .block-item.selected .block-address, .block-item:hover .block-address,
+  .block-item.selected .block-count, .block-item:hover .block-count {
+    color: white;
+  }

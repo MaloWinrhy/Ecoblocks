@@ -1,4 +1,5 @@
-use actix_web::{HttpResponse, web};
+use actix_web::error::InternalError;
+use actix_web::{web, HttpRequest, HttpResponse, Error};
 use serde::{Serialize, Deserialize};
 use diesel::pg::PgConnection;
 use diesel::r2d2::{self, ConnectionManager};
@@ -9,8 +10,8 @@ use lettre::message::{Message, SinglePart};
 use lettre::{AsyncSmtpTransport, AsyncTransport};
 use lettre::Tokio1Executor;
 use lettre::transport::smtp::authentication::Credentials;
-use lettre::transport::smtp::AsyncSmtpTransportBuilder;
 use regex::Regex;
+use crate::utils::decode_jwt::decode_jwt;
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
@@ -25,6 +26,7 @@ pub struct CreateUserRequest {
     username: String,
     email: String,
     password: String,
+    role: String,
 }
 
 #[derive(Serialize)]
@@ -32,6 +34,7 @@ pub struct UserResponse {
     id: i64,
     username: String,
     email: String,
+
 }
 
 pub async fn create_user_handler(
@@ -242,11 +245,42 @@ pub async fn delete_user_handler(
         },
     }
 }
-
-
-
 #[derive(Serialize)]
 pub struct ApiResponse<T> {
     status: String,
     message: T,
+}
+
+pub async fn get_profile_handler(
+    pool: web::Data<DbPool>,
+    req: HttpRequest,
+) -> Result<HttpResponse, Error> {
+    let mut conn = pool.get().expect("Failed to get DB connection");
+
+    let auth_header = match req.headers().get("Authorization") {
+        Some(header) => header.to_str().unwrap(),
+        None => return Err(InternalError::from_response("Unauthorized", HttpResponse::Unauthorized().body("No authorization header")).into()),
+    };
+
+    let token = auth_header.split(" ").collect::<Vec<&str>>()[1];
+
+    let claims = decode_jwt(token).map_err(|e| {
+        error!("Failed to decode JWT token: {:?}", e);
+        InternalError::from_response("Invalid token", HttpResponse::Unauthorized().body("Invalid token"))
+    })?;
+
+    match get_user_by_id(&mut conn, claims.sub) {
+        Ok(user) => Ok(HttpResponse::Ok().json(UserResponse {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+        })),
+        Err(e) => {
+            error!("Failed to get user by ID: {}", e);
+            Err(InternalError::from_response("User not found", HttpResponse::InternalServerError().json(ApiError {
+                status: "error".to_string(),
+                message: "User not found".to_string(),
+            })).into())
+        },
+    }
 }

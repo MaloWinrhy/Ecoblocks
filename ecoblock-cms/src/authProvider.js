@@ -1,4 +1,3 @@
-import jwtDecode from 'jwt-decode';
 
 const authProvider = {
     login: ({ email, password }) => {

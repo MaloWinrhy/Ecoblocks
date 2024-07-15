@@ -1,13 +1,16 @@
 import React from 'react';
+import { format } from 'date-fns';
 
 const Datatable = ({ blocks }) => {
+  const sortedBlocks = blocks.sort((a, b) => b.data.timestamp - a.data.timestamp);
+
   return (
     <div className="data-table">
       <h2>Block Data</h2>
       <table>
         <thead>
           <tr>
-            <th>Index</th>
+            <th>Date</th>
             <th>Temperature</th>
             <th>Humidity</th>
             <th>Air Quality Index</th>
@@ -26,9 +29,9 @@ const Datatable = ({ blocks }) => {
           </tr>
         </thead>
         <tbody>
-          {blocks.map((block, index) => (
+          {sortedBlocks.map((block, index) => (
             <tr key={index}>
-              <td>{block.index}</td>
+              <td>{format(new Date(block.data.timestamp * 1000), 'yyyy-MM-dd HH:mm:ss')}</td>
               <td>{block.data.environment.temperature}</td>
               <td>{block.data.environment.humidity}</td>
               <td>{block.data.environment.air_quality_index}</td>

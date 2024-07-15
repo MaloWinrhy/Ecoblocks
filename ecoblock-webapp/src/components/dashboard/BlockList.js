@@ -18,9 +18,8 @@ const BlockList = ({ blocks, selectedBlocks, setSelectedBlocks }) => {
           className={`block-item ${selectedBlocks.includes(block.hash) ? 'selected' : ''}`}
           onClick={() => handleSelectBlock(block.hash)}
         >
-          <h3>Block {block.index}</h3>
-          <p>Latitude: {block.data.location.latitude}</p>
-          <p>Longitude: {block.data.location.longitude}</p>
+          <h3>EcoBlock: {block.address.split(',')[0]}</h3>
+          <p className="block-address">{block.address}</p>
         </div>
       ))}
     </div>

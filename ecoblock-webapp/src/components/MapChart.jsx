@@ -9,7 +9,7 @@ const MapChart = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const map = L.map(mapRef.current).setView([48.8566, 2.3522], 13); // Centered on Paris
+    const map = L.map(mapRef.current).setView([48.8566, 2.3522], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -18,7 +18,7 @@ const MapChart = () => {
     const svgLayer = L.svg().addTo(map);
     const svg = select(svgLayer._rootGroup).attr("pointer-events", "none");
 
-    const hexbinGenerator = hexbin().radius(40); // Adjust radius as needed
+    const hexbinGenerator = hexbin().radius(40);
 
     const drawHexGrid = () => {
       const bounds = map.getBounds();

@@ -13,6 +13,10 @@ pub fn init_user_routes(cfg: &mut web::ServiceConfig) {
             .route(web::post().to(login_handler))
     )
     .service(
+        web::resource("/profile")
+            .route(web::get().to(get_profile_handler).wrap(Auth { required_role: None }))
+    )
+    .service(
         web::resource("/user/{id}")
             .route(web::get().to(get_user_by_id_handler).wrap(Auth { required_role: None }))
             .route(web::delete().to(delete_user_handler).wrap(Auth { required_role: Some("ADMIN".to_string()) }))
@@ -28,5 +32,6 @@ pub fn init_user_routes(cfg: &mut web::ServiceConfig) {
     .service(
         web::resource("/user/{id}/role")
             .route(web::put().to(update_user_role_handler).wrap(Auth { required_role: Some("ADMIN".to_string()) }))
-    );
+    )
+   ;
 }

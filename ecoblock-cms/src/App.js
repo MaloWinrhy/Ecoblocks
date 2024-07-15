@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Admin, Resource } from "react-admin";
 import authProvider from './authProvider';
-import dataProvider from './dataProvider'; // Assurez-vous que c'est le dataProvider personnalisé
+import dataProvider from './dataProvider';
 import { UserList, UserCreate, UserEdit } from './components/users';
 import { ProductList, ProductCreate, ProductEdit } from './components/products';
 import { PostList, PostCreate, PostEdit } from './components/posts';

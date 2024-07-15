@@ -68,13 +68,17 @@ where
                         let claims = token_data.claims;
                         if let Some(ref required_role) = self.required_role {
                             if claims.role != *required_role {
-                                error!("User does not have the required role: {}", required_role);
+                                error!(
+                                    "User does not have the required role: {}. Required role: {}",
+                                    claims.role, required_role
+                                );
                                 let (req, _pl) = req.into_parts();
                                 let res = HttpResponse::Forbidden().finish().map_into_boxed_body();
                                 let srv_res = ServiceResponse::new(req, res);
                                 return ok(srv_res).boxed_local();
                             }
                         }
+
                         req.extensions_mut().insert(claims);
                         return self.service.call(req).boxed_local();
                     } else {
