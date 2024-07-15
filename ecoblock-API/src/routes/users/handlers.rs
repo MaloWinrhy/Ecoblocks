@@ -26,8 +26,10 @@ pub struct CreateUserRequest {
     username: String,
     email: String,
     password: String,
-    role: String,
+    role: Option<String>,
 }
+const VALID_ROLES: &[&str] = &["user", "ADMIN"];
+
 
 #[derive(Serialize)]
 pub struct UserResponse {
@@ -61,9 +63,10 @@ pub async fn create_user_handler(
         }
     };
 
-    let default_role = "user".to_string();
+    let role = item.role.as_deref().unwrap_or("user"); // Use "user" if role is None
+    let role = if VALID_ROLES.contains(&role) { role } else { "user" };
 
-    match create_user(&mut conn, &item.username, &item.email, &password_hash, &default_role) {
+    match create_user(&mut conn, &item.username, &item.email, &password_hash, role) {
         Ok(user) => {
             if let Err(e) = send_confirmation_email(&item.email).await {
                 error!("Failed to send confirmation email: {}", e);
@@ -84,6 +87,7 @@ pub async fn create_user_handler(
         },
     }
 }
+
 
 fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
     hash(password, DEFAULT_COST)
