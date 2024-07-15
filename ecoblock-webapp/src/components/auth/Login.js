@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import './Auth.css';
 import { login, setToken } from '../../services/authServices';
 import { sanitizeInput, validateEmail, validatePassword } from '../../utils/validationUtils';
@@ -6,22 +7,15 @@ import { sanitizeInput, validateEmail, validatePassword } from '../../utils/vali
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     const sanitizedEmail = sanitizeInput(email);
     const sanitizedPassword = sanitizeInput(password);
 
     if (!validateEmail(sanitizedEmail)) {
-      setError('Invalid email format');
-      return;
-    }
-
-    if (!validatePassword(sanitizedPassword)) {
-      setError('Password must be at least 8 characters');
+      toast.error('Invalid email format');
       return;
     }
 
@@ -30,7 +24,7 @@ const Login = () => {
       setToken(response.token);
       window.location.href = '/';
     } catch (error) {
-      setError('Invalid email or password');
+      toast.error('Invalid email or password');
     }
   };
 
@@ -46,7 +40,6 @@ const Login = () => {
           <label>Password</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>
