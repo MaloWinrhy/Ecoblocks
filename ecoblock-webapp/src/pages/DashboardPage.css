@@ -14,12 +14,11 @@
     padding: 20px;
   }
 
-  .content {
+  .content-dashboard {
     flex: 1;
     padding: 20px;
     background-color: var(--color-white);
     border-radius: 8px;
-    box-shadow: 0 4px 8px var(--color-background-dark);
   }
 
   .stats {
