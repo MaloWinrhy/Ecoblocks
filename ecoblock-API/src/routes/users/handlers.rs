@@ -6,10 +6,11 @@ use crate::routes::users::actions::{create_user, get_user_by_id, get_all_users,u
 use bcrypt::{hash, DEFAULT_COST};
 use log::error;
 use lettre::message::{Message, SinglePart};
-use lettre::AsyncSmtpTransport;
+use lettre::{AsyncSmtpTransport, AsyncTransport};
 use lettre::Tokio1Executor;
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::transport::smtp::AsyncSmtpTransportBuilder;
+use regex::Regex;
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
@@ -37,6 +38,13 @@ pub async fn create_user_handler(
     pool: web::Data<DbPool>,
     item: web::Json<CreateUserRequest>,
 ) -> HttpResponse {
+    if !validate_password(&item.password) {
+        return HttpResponse::BadRequest().json(ApiError {
+            status: "error".to_string(),
+            message: "Password does not meet complexity requirements".to_string(),
+        });
+    }
+
     let mut conn = pool.get().expect("Failed to get DB connection");
 
     let password_hash = match hash_password(&item.password) {
@@ -50,7 +58,9 @@ pub async fn create_user_handler(
         }
     };
 
-    match create_user(&mut conn, &item.username, &item.email, &password_hash, &item.role) {
+    let default_role = "user".to_string();
+
+    match create_user(&mut conn, &item.username, &item.email, &password_hash, &default_role) {
         Ok(user) => {
             if let Err(e) = send_confirmation_email(&item.email).await {
                 error!("Failed to send confirmation email: {}", e);
@@ -81,7 +91,7 @@ async fn send_confirmation_email(recipient_email: &str) -> Result<(), Box<dyn st
         .from("your-email@example.com".parse()?)
         .to(recipient_email.parse()?)
         .subject("Confirmation de création de compte")
-        .singlepart(SinglePart::plain("Votre compte a été créé avec succès."))?;
+        .singlepart(SinglePart::plain("Votre compte a été créé avec succès.".to_string()))?;
 
     let creds = Credentials::new("smtp-username".to_string(), "smtp-password".to_string());
 
@@ -92,6 +102,15 @@ async fn send_confirmation_email(recipient_email: &str) -> Result<(), Box<dyn st
     mailer.send(email).await?;
 
     Ok(())
+}
+
+fn validate_password(password: &str) -> bool {
+    let length_ok = password.len() >= 8;
+    let has_uppercase = Regex::new(r"[A-Z]").unwrap().is_match(password);
+    let has_lowercase = Regex::new(r"[a-z]").unwrap().is_match(password);
+    let has_digit = Regex::new(r"\d").unwrap().is_match(password);
+
+    length_ok && has_uppercase && has_lowercase && has_digit
 }
 
 #[derive(Deserialize)]
@@ -224,9 +243,7 @@ pub async fn delete_user_handler(
     }
 }
 
-fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
-    hash(password, DEFAULT_COST)
-}
+
 
 #[derive(Serialize)]
 pub struct ApiResponse<T> {

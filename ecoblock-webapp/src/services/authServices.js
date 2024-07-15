@@ -1,5 +1,15 @@
 import axiosInstance from './apiConfig';
 
+export const register = async (username, email, password) => {
+  try {
+    const response = await axiosInstance.post('/create_user', { username, email, password });
+    return response.data;
+  } catch (error) {
+    console.error("There was an error registering!", error);
+    throw error;
+  }
+};
+
 export const login = async (email, password) => {
   try {
     const response = await axiosInstance.post('/login', { email, password });
