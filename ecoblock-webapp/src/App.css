@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
 @import './variables.css';
 
+header {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: #fffef8;
+  overflow-x: hidden;
 }
 
 .App {
@@ -37,4 +44,3 @@ body {
   font-weight: 700;
   font-style: italic;
 }
-
