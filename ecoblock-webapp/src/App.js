@@ -20,8 +20,9 @@ function App() {
     <Router>
       <div className="App">
       <ToastContainer
-          position="top"
+          position="top-center"
           autoClose={5000}
+          toastStyle={{ backgroundColor: '#f8f9fa', color: '#000' }}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
