@@ -7,7 +7,7 @@
     background-color: var(--color-gray-light);
   }
 
-  .main-content {
+  .main-content-dashboard{
     display: flex;
     flex-direction: column;
     flex: 1;

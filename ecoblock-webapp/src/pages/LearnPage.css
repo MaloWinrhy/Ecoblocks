@@ -16,7 +16,7 @@
     z-index: 1000;
   }
 
-  .main-content {
+  .main-content-learn {
     display: flex;
     flex: 1;
   }
@@ -56,17 +56,17 @@
     color: #4F7648;
   }
 
-  .content {
+  .learn-content {
     flex: 1;
     padding: 40px;
   }
 
-  .content h1 {
+  .learn-content h1 {
     font-size: 32px;
     margin-bottom: 20px;
   }
 
-  .content p {
+  .learn-content p {
     font-size: 18px;
     line-height: 1.6;
     margin-bottom: 20px;

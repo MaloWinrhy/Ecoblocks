@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
 import LearnPage from './pages/LearnPage';
 import DevBlogPage from './pages/DevBlogPage';
@@ -11,27 +9,17 @@ import ProfilePage from './pages/ProfilePage';
 import DashboardPage from './pages/DashBoardPage';
 import AuthPage from './pages/AuthPage';
 import MapPage from './pages/MapPage';
+import ErrorPage from './pages/ErrorPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
 import './App.css';
-import './components/common/toastStyle.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
-      <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          toastStyle={{ backgroundColor: '#f8f9fa', color: '#000' }}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          toastClassName="custom-toast"
-        />
+        <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/learn" element={<LearnPage />} />
@@ -56,7 +44,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="*"
+            element={<ErrorPage errorCode="404" errorMessage="Page Not Found" />}
+          />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

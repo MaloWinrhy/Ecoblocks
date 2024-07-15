@@ -1,12 +1,9 @@
 import React from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import './PrivacyPage.css';
 
 const PrivacyPage = () => {
   return (
     <div className="PrivacyPage">
-      <Header />
       <main className="privacy-content">
         <h1>Privacy Policy</h1>
         <section>
@@ -67,7 +64,6 @@ const PrivacyPage = () => {
           </p>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

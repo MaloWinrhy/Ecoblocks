@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import Sidebar from '../components/common/Sidebar';
 import Card from '../components/learn/Card';
 import './LearnPage.css';
@@ -8,10 +6,9 @@ import './LearnPage.css';
 const LearnPage = () => {
   return (
     <div className="learn-page">
-      <Header />
-      <div className="main-content">
+      <div className="main-content-learn">
         <Sidebar />
-        <main className="content">
+        <main className="learn-content">
           <h1 id="introduction">Welcome to EcoBlocks Docs</h1>
           <p>This documentation describes the relevant components, modules, and features that constitute the EcoBlocks Network.</p>
           <p>EcoBlocks connects the physical world to Web3 by using smartphones as edge nodes. The edge nodes read devices and sensors in the physical world using Bluetooth Low Energy (BLE) and connect that information to the blockchain. Anyone with a smartphone can join the network and earn ECOB, EcoBlocks’s native token.</p>
@@ -80,7 +77,6 @@ const LearnPage = () => {
           </div>
         </main>
       </div>
-      <Footer />
     </div>
   );
 }

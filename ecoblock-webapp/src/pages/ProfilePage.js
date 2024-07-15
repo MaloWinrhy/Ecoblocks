@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
-import Sidebar from '../components/common/Sidebar';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -25,7 +22,6 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <Header />
       <div className="main-content">
         <main className="content">
           <h1 id="profile">Profile</h1>
@@ -67,7 +63,6 @@ const ProfilePage = () => {
           </form>
         </main>
       </div>
-      <Footer />
     </div>
   );
 }

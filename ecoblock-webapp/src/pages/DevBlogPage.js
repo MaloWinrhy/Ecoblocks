@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './DevBlogPage.css';
 import BlogPost from '../components/blog/BlogPost';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
 import { getAllBlogPosts } from '../services/postsServices';
 
 const DevBlogPage = () => {
@@ -79,7 +77,6 @@ const DevBlogPage = () => {
 
   return (
     <div className="devblog-page">
-      <Header />
       <h1>Latest News</h1>
       <div className="search-bar">
         <input
@@ -119,7 +116,6 @@ const DevBlogPage = () => {
           </button>
         </div>
       )}
-      <Footer />
     </div>
   );
 }

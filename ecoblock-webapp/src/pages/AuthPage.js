@@ -2,8 +2,6 @@
     import Register from '../components/auth/Register';
     import Login from '../components/auth/Login';
     import './AuthPage.css';
-    import Header from '../components/common/Header';
-    import Footer from '../components/common/Footer';
 
     const Auth = () => {
     const [isRegister, setIsRegister] = useState(true);
@@ -14,14 +12,12 @@
 
     return (
     <div className='auth-page'>
-        <Header />
         <div className="auth-container">
             {isRegister ? <Login /> : <Register />}
             <button className="toggle-button" onClick={toggleAuthMode}>
                 {isRegister ?  'Don\'t have an account? Register' : 'Already have an account? Login' }
             </button>
         </div>
-        <Footer />
     </div>
     );
 };

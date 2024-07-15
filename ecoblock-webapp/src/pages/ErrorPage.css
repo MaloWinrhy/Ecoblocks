@@ -1,0 +1,35 @@
+.error-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.error-page-container h1 {
+  font-size: 6rem;
+  margin: 0;
+  color: var(--color-secondary);
+}
+
+.error-page-container .primary-color {
+  color: var(--color-primary);
+}
+
+.error-page-container p {
+  font-size: 1.5rem;
+  margin: 20px 0;
+  color: var(--color-text);
+}
+
+.home-link {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+.home-link:hover {
+  text-decoration: underline;
+}

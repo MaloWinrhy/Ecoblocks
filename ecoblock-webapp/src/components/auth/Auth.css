@@ -44,11 +44,20 @@
   color: var(--color-primary);
 }
 
+.form-group-2 input[type="checkbox"]:checked {
+  background-color: var(--color-primary);
+  border: none;
+}
 .form-group-2 a {
   color: var(--color-primary);
   text-decoration: underline;
   transition: color 0.3s ease;
 }
+
+.form-group-2 a:hover {
+  color: var(--color-secondary);
+}
+
 
 button {
   width: 100%;
