@@ -5,6 +5,11 @@ use diesel::r2d2::{self, ConnectionManager};
 use crate::routes::users::actions::{create_user, get_user_by_id, get_all_users,update_user_role, update_user_email, delete_user};
 use bcrypt::{hash, DEFAULT_COST};
 use log::error;
+use lettre::message::{Message, SinglePart};
+use lettre::AsyncSmtpTransport;
+use lettre::Tokio1Executor;
+use lettre::transport::smtp::authentication::Credentials;
+use lettre::transport::smtp::AsyncSmtpTransportBuilder;
 
 type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
@@ -19,7 +24,6 @@ pub struct CreateUserRequest {
     username: String,
     email: String,
     password: String,
-    role: String,
 }
 
 #[derive(Serialize)]
@@ -47,11 +51,17 @@ pub async fn create_user_handler(
     };
 
     match create_user(&mut conn, &item.username, &item.email, &password_hash, &item.role) {
-        Ok(user) => HttpResponse::Ok().json(UserResponse {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-        }),
+        Ok(user) => {
+            if let Err(e) = send_confirmation_email(&item.email).await {
+                error!("Failed to send confirmation email: {}", e);
+            }
+
+            HttpResponse::Ok().json(UserResponse {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+            })
+        },
         Err(e) => {
             error!("Failed to create user: {}", e);
             HttpResponse::InternalServerError().json(ApiError {
@@ -61,6 +71,29 @@ pub async fn create_user_handler(
         },
     }
 }
+
+fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
+    hash(password, DEFAULT_COST)
+}
+
+async fn send_confirmation_email(recipient_email: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let email = Message::builder()
+        .from("your-email@example.com".parse()?)
+        .to(recipient_email.parse()?)
+        .subject("Confirmation de création de compte")
+        .singlepart(SinglePart::plain("Votre compte a été créé avec succès."))?;
+
+    let creds = Credentials::new("smtp-username".to_string(), "smtp-password".to_string());
+
+    let mailer: AsyncSmtpTransport<Tokio1Executor> = AsyncSmtpTransport::<Tokio1Executor>::relay("smtp.example.com")?
+        .credentials(creds)
+        .build();
+
+    mailer.send(email).await?;
+
+    Ok(())
+}
+
 #[derive(Deserialize)]
 pub struct UpdateUserRoleRequest {
     new_role: String,
@@ -168,6 +201,7 @@ pub async fn update_user_email_handler(
         },
     }
 }
+
 
 pub async fn delete_user_handler(
     pool: web::Data<DbPool>,

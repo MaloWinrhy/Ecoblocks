@@ -8,6 +8,7 @@ import TermsPage from './pages/TermsPage';
 import ProfilePage from './pages/ProfilePage';
 import DashboardPage from './pages/DashBoardPage';
 import AuthPage from './pages/AuthPage';
+import MapPage from './pages/MapPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/map" element={<MapPage />} />
           <Route
             path="/profile"
             element={
