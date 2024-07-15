@@ -9,6 +9,8 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,8 +35,13 @@ const Register = () => {
       return;
     }
 
+    if (!acceptTerms) {
+      toast.error('You must accept the terms and conditions and privacy policy.');
+      return;
+    }
+
     try {
-      await register(sanitizedUsername, sanitizedEmail, sanitizedPassword);
+      await register(sanitizedUsername, sanitizedEmail, sanitizedPassword, subscribeNewsletter);
       toast.success('Registration successful!');
     } catch (error) {
       toast.error('Failed to register. Please try again.');
@@ -60,6 +67,16 @@ const Register = () => {
         <div className="form-group">
           <label>Confirm Password</label>
           <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+        </div>
+        <div className="form-group-2">
+          <input type="checkbox" checked={acceptTerms} onChange={(e) => setAcceptTerms(e.target.checked)} />
+          <label>
+            I accept the <a href="/terms" target="_blank">terms and conditions</a> and <a href="/privacy" target="_blank">privacy policy</a>.
+          </label>
+        </div>
+        <div className="form-group-2">
+          <input type="checkbox" checked={subscribeNewsletter} onChange={(e) => setSubscribeNewsletter(e.target.checked)} />
+          <label>Subscribe to the newsletter</label>
         </div>
         <button type="submit">Register</button>
       </form>
