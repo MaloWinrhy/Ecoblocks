@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use diesel::r2d2::{self, ConnectionManager};
@@ -19,7 +21,7 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init();
 
-    let config = config::Config::from_env().expect("Failed to load configuration");
+    let config = Arc::new(config::Config::from_env().expect("Failed to load configuration"));
 
     let manager = ConnectionManager::<PgConnection>::new(&config.database_url);
     let pool = r2d2::Pool::builder().build(manager).expect("Failed to create pool.");
@@ -27,6 +29,7 @@ async fn main() -> std::io::Result<()> {
     info!("Starting server at http://0.0.0.0:8000");
 
     HttpServer::new(move || {
+        let api_key = config.api_key.clone();
         App::new()
             .wrap(
                 Cors::default()
@@ -37,8 +40,8 @@ async fn main() -> std::io::Result<()> {
                     .max_age(3600)
             )
             .app_data(web::Data::new(pool.clone()))
-            .app_data(web::Data::new(config.database_url.clone()))
-            .configure(routes::init_routes)
+            .app_data(web::Data::new(config.clone()))
+            .configure(|cfg| routes::init_routes(cfg, api_key.clone()))
     })
     .bind("0.0.0.0:8000")?
     .run()
