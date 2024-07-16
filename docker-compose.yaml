@@ -4,14 +4,15 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ecoblocks_user
-      POSTGRES_PASSWORD: ecoblocks_password
-      POSTGRES_DB: ecoblocks_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./init.sql.template:/docker-entrypoint-initdb.d/init.sql.template
     networks:
       - ecoblock-network
 
@@ -31,7 +32,7 @@ services:
       - mongodb
       - ecoblock-blockchain
     environment:
-      DATABASE_URL: postgres://ecoblocks_user:ecoblocks_password@db:5432/ecoblocks_db
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       MONGO_URL: mongodb://mongodb:27017/Ecoblocks
       SERVER_ADDRESS: "0.0.0.0:8000"
       BLOCKCHAIN_URL: http://ecoblock-blockchain:9000
@@ -44,6 +45,7 @@ services:
     build: ./ecoblock-blockchain
     environment:
       SERVER_ADDRESS: "0.0.0.0:9000"
+      MONGODB_URI: mongodb://mongodb:27017/ecoblockchain
     ports:
       - "9000:9000"
     networks:

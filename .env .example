@@ -1,0 +1,3 @@
+DB_USER=ecoblocks_user
+DB_PASSWORD=ecoblocks_password
+DB_NAME=ecoblocks_db
