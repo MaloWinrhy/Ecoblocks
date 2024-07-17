@@ -68,9 +68,9 @@ pub async fn create_user_handler(
 
     match create_user(&mut conn, &item.username, &item.email, &password_hash, role) {
         Ok(user) => {
-            if let Err(e) = send_confirmation_email(&item.email).await {
-                error!("Failed to send confirmation email: {}", e);
-            }
+            // if let Err(e) = send_confirmation_email(&item.email).await {
+            //     error!("Failed to send confirmation email: {}", e);
+            // }
 
             HttpResponse::Ok().json(UserResponse {
                 id: user.id,

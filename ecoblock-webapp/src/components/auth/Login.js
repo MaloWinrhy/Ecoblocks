@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './Auth.css';
 import { login, setToken } from '../../services/authServices';
-import { sanitizeInput, validateEmail, validatePassword } from '../../utils/validationUtils';
+import { sanitizeInput, validateEmail } from '../../utils/validationUtils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,6 +22,7 @@ const Login = () => {
     try {
       const response = await login(sanitizedEmail, sanitizedPassword);
       setToken(response.token);
+      toast.success('Login successful!');
       window.location.href = '/';
     } catch (error) {
       toast.error('Invalid email or password');

@@ -1,17 +1,21 @@
+// config/axiosInstance.js
 import axios from 'axios';
-import { getToken } from './authServices';
-import { API_URL } from '../config';
-
+import { config } from '../config';
+const API_URL = config.API_URL;
+const API_KEY = config.API_KEY;
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 10000,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': API_KEY,
+  },
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = getToken();
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

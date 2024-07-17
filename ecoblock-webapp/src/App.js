@@ -1,4 +1,6 @@
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LearnPage from './pages/LearnPage';
@@ -20,6 +22,18 @@ function App() {
     <Router>
       <div className="App">
         <Header />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          style={{ width: "500px", fontSize: "18px" }}
+        />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/learn" element={<LearnPage />} />
