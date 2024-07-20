@@ -4,20 +4,20 @@ import './StatsSection.css';
 const StatsSection = () => {
   return (
     <section className="stats-section">
-      <h2>Cool title that explains what your company does</h2>
-      <p>Some more info in a paragraph supporting the headline, explaining the specific issue you solve for your customers.</p>
+      <h2>EcoBlocks: Revolutionizing Environmental Data Collection</h2>
+      <p>EcoBlocks leverages blockchain and IoT technologies to provide accurate and reliable environmental data, promoting sustainable practices and smart city solutions.</p>
       <div className="stats">
         <div className="stat">
-          <h3>24+</h3>
-          <p>Burger Blisses across the country</p>
+          <h3>50+</h3>
+          <p>IoT Devices Deployed Globally</p>
         </div>
         <div className="stat">
-          <h3>17M</h3>
-          <p>Burger eaters and counting</p>
+          <h3>10K+</h3>
+          <p>Environmental Data Points Collected Daily</p>
         </div>
         <div className="stat">
-          <h3>+95%</h3>
-          <p>Customer satisfaction</p>
+          <h3>95%</h3>
+          <p>Data Accuracy and Reliability</p>
         </div>
       </div>
     </section>

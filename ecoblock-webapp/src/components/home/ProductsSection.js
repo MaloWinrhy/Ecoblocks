@@ -36,8 +36,8 @@ const ProductsSection = () => {
             key={index}
             image={product.image}
             title={product.title}
-            description={product.description}
-            tag={product.tag}
+            description={product.content}
+            tag={product.tags && product.tags.length > 0 ? product.tags[0] : ''}
           />
         ))}
       </div>

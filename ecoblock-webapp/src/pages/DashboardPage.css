@@ -1,13 +1,11 @@
-
-
-  .dashboard-page {
+.dashboard-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--color-gray-light);
   }
 
-  .main-content-dashboard{
+  .main-content-dashboard {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -51,7 +49,8 @@
     border-collapse: collapse;
   }
 
-  .data-table th, .data-table td {
+  .data-table th,
+  .data-table td {
     border: 1px solid var(--color-gray-medium);
     padding: 10px;
     text-align: center;
@@ -70,6 +69,7 @@
     background-color: var(--color-primary-light);
     color: var(--color-white);
   }
+
   .filter-form {
     margin: 20px 0;
     display: flex;
@@ -87,4 +87,21 @@
     font-size: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
+  }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+  }
+
+  .main-content-dashboard.blurred {
+    filter: blur(10px);
   }

@@ -12,7 +12,7 @@ import DashboardPage from './pages/DashBoardPage';
 import AuthPage from './pages/AuthPage';
 import MapPage from './pages/MapPage';
 import ErrorPage from './pages/ErrorPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './utils/ProtectedRoute';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import './App.css';

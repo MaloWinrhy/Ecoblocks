@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Lottie from 'react-lottie';
+import * as animationData from '../assets/plant.json';
 import Stats from '../components/dashboard/Stats';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, RadialLinearScale, Title, Tooltip, Legend } from 'chart.js';
 import ChartContainer from '../components/dashboard/ChartContainer';
@@ -33,15 +35,18 @@ const DashboardPage = () => {
   const [selectedBlocks, setSelectedBlocks] = useState([]);
   const [blocksWithAddress, setBlocksWithAddress] = useState([]);
   const [searchRadius, setSearchRadius] = useState(50); // Default search radius in km
+  const [loading, setLoading] = useState(false);
   const mapRef = useRef();
 
   useEffect(() => {
     const fetchAddresses = async () => {
+      setLoading(true);
       const updatedBlocks = await Promise.all(filteredBlocks.map(async (block) => {
         const address = await getAddressFromCoordinates(block.data.location.latitude, block.data.location.longitude);
         return { ...block, address };
       }));
       setBlocksWithAddress(updatedBlocks);
+      setLoading(false);
     };
 
     if (coordinates) {
@@ -85,10 +90,10 @@ const DashboardPage = () => {
 
   const customIcon = new L.Icon({
     iconUrl: markerIcon,
-    iconSize: [25, 41], // Taille du marqueur
-    iconAnchor: [12, 41], // Point d'ancrage du marqueur
-    popupAnchor: [1, -34], // Point d'ancrage de la popup
-    shadowSize: [41, 41] // Taille de l'ombre
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
   });
 
   const handleRadiusChange = (e) => {
@@ -97,9 +102,23 @@ const DashboardPage = () => {
 
   const selectedBlockData = selectedBlocks.map(hash => blocksWithAddress.find(block => block.hash === hash));
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData.default,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
   return (
     <div className="dashboard-page">
-      <div className="main-content-dashboard">
+      {loading && (
+        <div className="loading-overlay">
+          <Lottie options={defaultOptions} height={400} width={400} />
+        </div>
+      )}
+      <div className={`main-content-dashboard ${loading ? 'blurred' : ''}`}>
         <main className="content-dashboard">
           <h1>Dashboard</h1>
           <LocationSearch setCoordinates={setCoordinates} />

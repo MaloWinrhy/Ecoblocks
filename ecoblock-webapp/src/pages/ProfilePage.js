@@ -6,10 +6,9 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState({
     username: '',
     email: '',
-    bio: '',
-    ecoBlocks: 0,
-    rank: 0,
-    walletNumber: '',
+    ecoBlocks: 1500,
+    rank: 12,
+    walletNumber: '1234-5678-9101-1121',
   });
 
   useEffect(() => {
@@ -17,6 +16,7 @@ const ProfilePage = () => {
       try {
         const data = await getProfile();
         setProfile({
+          ...profile,
           username: data.username,
           email: data.email,
         });
@@ -43,10 +43,6 @@ const ProfilePage = () => {
               <p>{profile.email}</p>
             </div>
             <div className="profile-item">
-              <h2>Bio</h2>
-              <p>{profile.bio}</p>
-            </div>
-            <div className="profile-item">
               <h2>EcoBlocks</h2>
               <p>{profile.ecoBlocks}</p>
             </div>
@@ -61,7 +57,9 @@ const ProfilePage = () => {
             <div className="profile-item">
               <h2>Wallet Stats</h2>
               <div className="blur-text">
-
+                <p>Balance: 10000 EcoBlockCoins</p>
+                <p>Transactions: 250</p>
+                <p>Last Transaction: 01-07-2024</p>
               </div>
             </div>
           </div>

@@ -42,3 +42,21 @@
 .newsletter button:hover {
   background-color: var(--color-primary-hover);
 }
+
+@media (max-width: 1024px) {
+  .newsletter button {
+    width: 20%;
+  }
+}
+
+@media (max-width: 768px) {
+  .newsletter button {
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter button {
+    width: 80%;
+  }
+}
