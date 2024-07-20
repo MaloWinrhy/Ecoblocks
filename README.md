@@ -5,7 +5,7 @@
 [![PostgreSQL](https://img.shields.io/badge/postgresql-v13.3-blue)](https://www.postgresql.org/)
 [![MongoDB](https://img.shields.io/badge/mongodb-v4.4.6-green)](https://www.mongodb.com/)
 [![React](https://img.shields.io/badge/react-v17.0.2-blue)](https://reactjs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Ecoblocks is an application using Docker, PostgreSQL, MongoDB, and microservices to manage blockchain transactions and user interactions.
 
