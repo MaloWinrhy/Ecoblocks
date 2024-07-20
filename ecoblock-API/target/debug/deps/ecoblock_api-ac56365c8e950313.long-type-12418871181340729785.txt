@@ -1,1 +1,0 @@
-futures::future::Either<<S as actix_service::Service<ServiceRequest>>::Future, Pin<Box<(dyn futures::Future<Output = Result<ServiceResponse<EitherBody<B>>, actix_web::Error>> + 'static)>>>
